@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Fourmateur;
 use Illuminate\Http\Request;
 use App\Http\Requests\FourmateurRequest;
+use App\Http\Resources\FourmateurResource;
 
 class FourmateurController extends Controller
 {
@@ -13,7 +14,7 @@ class FourmateurController extends Controller
      */
     public function index()
     {
-        return Fourmateur::all();
+        return FourmateurResource::collection(Fourmateur::all());
     }
 
     /**
@@ -25,10 +26,7 @@ class FourmateurController extends Controller
 
         $fourmateur = Fourmateur::create($fields);
 
-        return [
-            'fourmateur' => $fourmateur,
-            'message' => 'formateur créé avec succès'
-        ];
+        return new FourmateurResource($fourmateur);
     }
 
     /**
@@ -36,7 +34,7 @@ class FourmateurController extends Controller
      */
     public function show(Fourmateur $fourmateur)
     {
-        return $fourmateur;
+        return new FourmateurResource($fourmateur);
     }
 
     /**
@@ -48,10 +46,7 @@ class FourmateurController extends Controller
 
         $fourmateur->fill($fields)->save();
 
-        return [
-            'fourmateur' => $fourmateur,
-            'message' => 'Modification effectuée avec succès'
-        ];
+        return new FourmateurResource($fourmateur);
     }
 
     /**
@@ -59,6 +54,12 @@ class FourmateurController extends Controller
      */
     public function destroy(Fourmateur $fourmateur)
     {
-        //
+        $fourmateur->delete();
+
+        return [
+            'id' => $fourmateur->id ,
+            'message' => 'Suppression effectuée avec succès',
+        ];
+
     }
 }
