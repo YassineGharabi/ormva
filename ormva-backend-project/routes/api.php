@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeController;
+use App\Http\Controllers\FormationController;
 use App\Http\Controllers\FourmateurController;
 
 Route::get('/user', function (Request $request) {
@@ -13,6 +14,7 @@ Route::get('/user', function (Request $request) {
 
 Route::apiResource('fourmateurs',FourmateurController::class);
 Route::apiResource('employes',EmployeController::class);
+Route::apiResource('formations',FormationController::class);
 
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Formation;
 use Illuminate\Http\Request;
+use App\Http\Requests\FormationRequest;
+use App\Http\Resources\FormationResource;
 
 class FormationController extends Controller
 {
@@ -16,19 +18,15 @@ class FormationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(FormationRequest $request)
     {
-        //
+        $fields = $request->validated();
+
+        $formation = Formation::create($fields);
+
+        return new FormationResource($formation);
     }
 
     /**
@@ -36,23 +34,19 @@ class FormationController extends Controller
      */
     public function show(Formation $formation)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Formation $formation)
-    {
-        //
+        return new FormationResource($formation);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Formation $formation)
+    public function update(FormationRequest $request, Formation $formation)
     {
-        //
+        $fields = $request->validated();
+
+        $formation->update($fields);
+
+        return new FormationResource($formation);
     }
 
     /**
@@ -60,6 +54,12 @@ class FormationController extends Controller
      */
     public function destroy(Formation $formation)
     {
-        //
+        $formation->delete();
+
+        return [
+            'id' => $formation->id ,
+            'message' => 'Suppression effectuée avec succès',
+        ];
+
     }
 }
