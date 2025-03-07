@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Formation;
 use Illuminate\Database\Eloquent\Model;
 
 class Employe extends Model
@@ -14,4 +15,10 @@ class Employe extends Model
         'service',
         'bureau'
     ];
+
+    public function formations()
+    {
+        return $this->belongsToMany(Formation::class , 'participe')->withPivot('note','presence');
+    }
+
 }

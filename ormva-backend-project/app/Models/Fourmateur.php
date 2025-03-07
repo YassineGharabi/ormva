@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Formation;
 use Illuminate\Database\Eloquent\Model;
 
 class Fourmateur extends Model
@@ -12,4 +13,10 @@ class Fourmateur extends Model
         'domain',
         'entreprise'
     ];
+
+    public function formations()
+    {
+        return $this->hasMany(Formation::class);
+    }
+
 }
