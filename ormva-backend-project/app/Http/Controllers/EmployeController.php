@@ -61,4 +61,18 @@ class EmployeController extends Controller
             'message' => 'Suppression effectuée avec succès',
         ];
     }
+
+    // this function assign an employe to a formation
+
+    public function assignEmployeToFormation(Request $request)
+    {
+        $employe = Employe::findOrFail($request->employe_id);
+
+        $employe->formations()->attach($request->formation_id,[
+            'note' => $request->note ,
+            'presence' => $request->presence
+        ]);
+
+        return $employe->formations;
+    }
 }

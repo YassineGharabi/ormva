@@ -16,6 +16,8 @@ Route::apiResource('fourmateurs',FourmateurController::class);
 Route::apiResource('employes',EmployeController::class);
 Route::apiResource('formations',FormationController::class);
 
+Route::get('/assign-employe',[EmployeController::class,'assignEmployeToFormation']);
+
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 Route::post('/logout',[AuthController::class,'logout'])->middleware('auth:sanctum');

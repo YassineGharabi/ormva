@@ -18,7 +18,7 @@ class Employe extends Model
 
     public function formations()
     {
-        return $this->belongsToMany(Formation::class , 'participe')->withPivot('note','presence');
+        return $this->belongsToMany(Formation::class , 'participes')->withPivot('note','presence');
     }
 
 }
