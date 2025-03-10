@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    
+
     public function register(UserRequest $request){
 
 
         $fields = $request->validated();
-        
+
         $user = User::create($fields);
 
         $token = $user->createToken($request->name);
@@ -26,9 +26,9 @@ class AuthController extends Controller
     }
 
     public function login(Request $request){
-        
+
         $request->validate([
-            'email' => 'required|email|exists:users',
+            'email' => 'required|email',
             'password' => 'required|min:8'
         ]);
 
@@ -53,7 +53,7 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request){
-        // delete all tokens that belong to this user 
+        // delete all tokens that belong to this user
         $request->user()->tokens()->delete();
 
         return [
