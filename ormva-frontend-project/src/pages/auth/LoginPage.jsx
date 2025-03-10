@@ -65,7 +65,7 @@ const LoginPage = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 w-[380px] p-4 shadow-lg rounded-sm dark:bg-[#171717] ">
         <div className="space-y-1">
         <h1 className="text-2xl font-extrabold tracking-wide" >Connectez-vous</h1>
-        <p className="text-sm font-semibold text-gray-700/80" >Entrez vos informations ci-dessous pour vous connecter</p>
+        <p className="text-sm font-semibold text-gray-700/80 dark:text-white/60" >Entrez vos informations ci-dessous pour vous connecter</p>
         </div>
         <div  className="space-y-3">
             {/* email input */}

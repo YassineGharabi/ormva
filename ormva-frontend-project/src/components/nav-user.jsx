@@ -1,10 +1,7 @@
 "use client"
 
 import {
-  BadgeCheck,
-  Bell,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
   Sparkles,
 } from "lucide-react"
@@ -25,10 +22,37 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useContext } from "react";
+import { appContext } from "@/context/ContextProvider";
+import customAxios from "@/api/customAxios";
+import { useNavigate } from "react-router-dom";
 
 export function NavUser(){
  
-  const { isMobile } = useSidebar()
+  const { isMobile } = useSidebar();
+  const nav = useNavigate();
+  const {token} = useContext(appContext);
+
+  const handleLogout = async () =>{
+
+    try{
+
+      const response = await customAxios.post('logout',{},{
+        headers : {
+          Authorization : `Bearer ${token}`,
+        }
+      });
+  
+      if(response.status == 200){
+        localStorage.removeItem('token');
+        nav('/');
+      }
+
+    }catch(err){
+      console.error(err);
+    }
+
+  }
 
   return (
     <SidebarMenu>
@@ -68,7 +92,7 @@ export function NavUser(){
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout} >
               <LogOut />
               Log out
             </DropdownMenuItem>

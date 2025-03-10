@@ -15,8 +15,9 @@ const ContextProvider = ({children}) => {
                 Authorization : `Bearer ${token}`,
             }
         });
+
         
-        setUser(response.data.user);
+        setUser(response.data);
 
     }
 
