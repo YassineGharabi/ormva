@@ -30,59 +30,56 @@ const formSchema = yup.object({
   entreprise: yup.string().required(),
 })
 
-const FourmateurCreate = () => {
+const FourmateurUpdate = ({fourmateur,setOpenUpdateDialog,setRunEffect}) => {
 
-  const {token} = useContext(appContext);
-  const nav = useNavigate();
-
-
-  const form = useForm({
-    resolver: yupResolver(formSchema),
-    defaultValues: {
-      nom: "",
-      contact: "",
-      domain: "",
-      entreprise: "",
-    },
-  });
+    const {token} = useContext(appContext);
 
 
+    const form = useForm({
+        resolver: yupResolver(formSchema),
+        defaultValues: {
+          nom: fourmateur.nom,
+          contact: fourmateur.contact,
+          domain: fourmateur.domain,
+          entreprise: fourmateur.entreprise,
+        },
+    });
 
-  const onSubmit = async (values) => {
 
-    try{
-      const createLoading = toast.loading('Veuillez patienter');
-      const response = await customAxios.post('fourmateurs',values,{
-        headers : {
-          Authorization : `Bearer ${token}`
+    // function that handle update
+    const onSubmit = async (values) => {
+        const updateloading = toast.loading('Veuillez patienter');
+        try{
+            const response = await customAxios.put(`fourmateurs/${fourmateur.id}`,values,{
+                headers:{
+                    Authorization : `Bearer ${token}`
+                }
+            });
+            
+
+            if(response.status == 200){
+              toast.dismiss(updateloading);
+              setRunEffect( prevState => prevState + 1 );
+              setOpenUpdateDialog(false);
+              
+              setTimeout(()=>{ // Short delay before showing success toast
+                toast.success("Modifier avec succès",{
+                  duration: 2000,
+                });
+              },100)
+
+            }
+
+        }catch(err){
+            console.log(err);
+            toast.dismiss(updateloading);
         }
-      });
-
-
-
-      if(response.status == 201){
-        toast.dismiss(createLoading);
-
-        setTimeout(()=>{
-          toast.success('Ajouté avec succès',{
-            duration:2000
-          });
-        },100)
-
-        nav('/dashboard/fourmateur');
       }
-
-
-    }catch(err){
-      console.error(err);
-      toast.dismiss(createLoading);
-    }
-      
-  }
+    
 
   return (
-    <div  >
-      <Form {...form} >
+    <div>
+    <Form {...form} >
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 w-full mx-auto p-4 rounded-sm  ">
           <div className="space-y-3">
             {/* nom input */}
@@ -91,9 +88,9 @@ const FourmateurCreate = () => {
               name="nom"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nom complet</FormLabel>
+                  <FormLabel>Nom</FormLabel>
                   <FormControl>
-                    <Input  {...field} placeholder="Nom complet" />
+                    <Input  {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -107,7 +104,7 @@ const FourmateurCreate = () => {
                 <FormItem>
                   <FormLabel>Contact</FormLabel>
                   <FormControl>
-                    <PhoneInput {...field} placeholder="0000-000000" />
+                    <PhoneInput {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -121,7 +118,7 @@ const FourmateurCreate = () => {
                 <FormItem>
                   <FormLabel>Domain</FormLabel>
                   <FormControl>
-                    <Input  {...field} placeholder="Domain" />
+                    <Input  {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -135,18 +132,18 @@ const FourmateurCreate = () => {
                 <FormItem>
                   <FormLabel>Entreprise</FormLabel>
                   <FormControl>
-                    <Input  {...field} placeholder="Entreprise" />
+                    <Input  {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <Button type="submit" >Créer</Button>
+          <Button type="submit" >Modifier</Button>
         </form>
       </Form>
     </div>
   )
 }
 
-export default FourmateurCreate
+export default FourmateurUpdate

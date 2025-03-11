@@ -12,41 +12,64 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 
 import React, { useContext, useEffect, useState } from 'react'
 
-import { SquarePen, Trash } from "lucide-react"
+import { SquarePen, Trash, Trash2Icon } from "lucide-react"
 import { toast } from 'sonner';
+import FourmateurUpdate from './FourmateurUpdate';
 
 
 
 
 const FourmateurList = () => {
 
-  const [fourmateurs, setFourmateurs] = useState([]);
-  const { token } = useContext(appContext);
 
-  const handleDelete = async (id) =>{
-    try{
+  const { token , setFourmateurs , fourmateurs} = useContext(appContext);
+  // to run effect to get fourmateurs after updating
+  const [runEffect,setRunEffect] = useState(0);
+
+  const handleDelete = async (id) => {
+    const deletingLoading = toast.loading('Veuillez patienter');
+    try {
       // delete fourmateur on db
-      const response = await customAxios.delete(`fourmateurs/${id}`,{
-        headers : {
-          Authorization : `Bearer ${token}`,
+      const response = await customAxios.delete(`fourmateurs/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         }
       });
-      console.log(response);
+
       // delete fourmateur in client side
-      if(response.status == 200){
-        setFourmateurs( fourmateurs.filter( fourmateur => fourmateur.id !== id  ));
-        toast.success('Supprimer avec succès');
+      if (response.status == 200) {
+        toast.dismiss(deletingLoading);
+        setFourmateurs(fourmateurs.filter(fourmateur => fourmateur.id !== id));
+
+        setTimeout(()=>{ // Short delay before showing success toast to not be prevent by toast dismiss
+          toast.success(response.data.message, {
+            duration: 2000,
+            icon: <Trash2Icon />
+          });
+        },100);
+
       }
-      
-    }catch(err){
-      console.error(err)
+
+    } catch (err) {
+      console.error(err);
+      toast.dismiss(deletingLoading);
+
     }
 
   }
-
+  // columns of table
   const columns = [
     {
       accessorKey: "id",
@@ -68,16 +91,28 @@ const FourmateurList = () => {
       accessorKey: "entreprise",
       header: "Entreprise",
     },
+    // column of actions
     {
       id: "actions",
       cell: ({ row }) => {
         const fourmateur = row.original
-        const { id , nom}  = fourmateur;
-
+        const { id, nom } = fourmateur;
+        const [openUpdateDialog,setOpenUpdateDialog] = useState(false);
 
         return (
           <span className='flex items-center gap-2 '>
-            <SquarePen className="h-4 w-4 cursor-pointer" />
+            <Dialog open={openUpdateDialog} onOpenChange={setOpenUpdateDialog} >
+              <DialogTrigger>
+                <SquarePen className="h-4 w-4 cursor-pointer" />
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Formailire de Modifier</DialogTitle>
+                  <DialogDescription>Fourmateur : {nom}</DialogDescription>
+                  <FourmateurUpdate fourmateur={fourmateur} setOpenUpdateDialog={setOpenUpdateDialog} setRunEffect={setRunEffect} />
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
             {/* alert dialogue */}
             <AlertDialog>
               <AlertDialogTrigger><Trash className="h-4 w-4 cursor-pointer" /></AlertDialogTrigger>
@@ -85,12 +120,12 @@ const FourmateurList = () => {
                 <AlertDialogHeader>
                   <AlertDialogTitle>En êtes-vous absolument sûre ?</AlertDialogTitle>
                   <AlertDialogDescription>
-                  Cela supprimera définitivement ce fourmateur {nom}.
+                    Cela supprimera définitivement ce fourmateur {nom}.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Annuler</AlertDialogCancel>
-                  <AlertDialogAction onClick={()=>handleDelete(id)} >Supprimer</AlertDialogAction>
+                  <AlertDialogAction onClick={() => handleDelete(id)} >Supprimer</AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
@@ -119,7 +154,7 @@ const FourmateurList = () => {
 
   useEffect(() => {
     getFourmateurs();
-  }, []);
+  }, [runEffect]);
 
   return (
     <>

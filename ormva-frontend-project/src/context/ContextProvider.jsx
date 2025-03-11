@@ -6,6 +6,8 @@ const ContextProvider = ({children}) => {
 
     const [token,setToken] = useState(localStorage.getItem('token'));
     const [user,setUser] = useState({});
+    const [fourmateurs,setFourmateurs] = useState([]);
+    const [employes,setEmployes] = useState([]);
 
     // function to get the current user if you have token
     const getUser = async () => {
@@ -28,7 +30,12 @@ const ContextProvider = ({children}) => {
     },[token]);
 
   return (
-    <appContext.Provider value={{setToken,token,user}} >
+    <appContext.Provider value={{
+    setToken,token,
+    user,
+    fourmateurs,setFourmateurs,
+    employes,setEmployes
+    }} >
         {children}
     </appContext.Provider>
   )

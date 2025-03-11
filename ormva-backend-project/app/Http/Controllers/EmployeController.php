@@ -14,6 +14,7 @@ class EmployeController extends Controller
      */
     public function index()
     {
+
         return EmployeResource::collection(Employe::all());
     }
 
