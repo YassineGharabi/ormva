@@ -12,13 +12,17 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::middleware('auth:sanctum')->group(function(){
 
 Route::apiResource('fourmateurs',FourmateurController::class);
 Route::apiResource('employes',EmployeController::class);
 Route::apiResource('formations',FormationController::class);
 Route::apiResource('doc_pedagogiques',Doc_pedagogiqueController::class);
-
 Route::get('/assign-employe',[EmployeController::class,'assignEmployeToFormation']);
+
+});
+
+
 
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);

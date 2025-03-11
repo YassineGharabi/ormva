@@ -1,5 +1,7 @@
 import RequireAuth from "@/components/requireAuth/RequireAuth";
 import LoginPage from "@/pages/auth/LoginPage";
+import FourmateurCreate from "@/pages/fourmateur/FourmateurCreate";
+import FourmateurLayout from "@/pages/fourmateur/FourmateurLayout";
 import FourmateurList from "@/pages/fourmateur/FourmateurList";
 import DashboardLayout from "@/pages/Layout/DashboardLayout";
 import { createBrowserRouter } from "react-router-dom";
@@ -24,7 +26,17 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'fourmateur',
-                element: <FourmateurList />
+                element: <FourmateurLayout />,
+                children: [
+                    {
+                        path : '',
+                        element : <FourmateurList/>
+                    },
+                    {
+                        path : 'create',
+                        element : <FourmateurCreate/>
+                    }
+                ]
             },
         ]
     }

@@ -44,13 +44,14 @@ const LoginPage = () => {
   const onSubmit = async (values) => {
         try{
             const response = await customAxios.post('login',values);
-
+    
             // catch the error of The provided credentials are incorrect.
             if(response.data.errors){
                 setError(response.data.errors.email[0]);
             }else{
               setToken(response.data.token);
               localStorage.setItem('token',response.data.token);
+              
               nav('/dashboard');
             }
 
@@ -58,6 +59,8 @@ const LoginPage = () => {
             console.error(err);
         }
   }
+
+
 
   return (
     <div className="flex h-screen justify-center items-center">
