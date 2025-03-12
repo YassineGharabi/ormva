@@ -115,6 +115,10 @@ const FormationList = () => {
       header: "Lieu",
     },
     {
+      accessorKey: "status",
+      header: "statut",
+    },
+    {
       accessorKey: "nombre_max",
       header: "nombre maximum",
     },

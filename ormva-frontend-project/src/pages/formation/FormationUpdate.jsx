@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup';
 import customAxios from "@/api/customAxios";
-import {useContext, useEffect} from "react";
+import {useContext, useEffect, useState} from "react";
 import { appContext } from "@/context/ContextProvider";
 import { toast } from "sonner";
 import {Textarea} from "@/components/ui/textarea.jsx";
@@ -40,23 +40,42 @@ const formSchema = yup.object({
 
 const FormationUpdate = ({formation,setRunEffect,setOpenUpdateDialog}) => {
 
-  const { token , fourmateurs , setFourmateurs } = useContext(appContext);
+  const { token } = useContext(appContext);
   
 
 
   const form = useForm({
     resolver: yupResolver(formSchema),
     defaultValues: {
-      intitule: 'test',
+      intitule: formation.intitule,
       description: formation.description,
       date_debut: formation.date_debut,
       date_fin: formation.date_fin,
       duree: formation.duree,
       lieu: formation.lieu,
       nombre_max: formation.nombre_max,
-      formateur_id: formation.formateur_id
+      formateur_id: formation.formateur_id,
+      status: formation.status
     },
   });
+
+  const [selectFourmateurs,setSelectFourmateurs] = useState([]);
+
+
+  const getFourmation = async () => {
+    const response = await customAxios.get('fourmateurs',{
+      headers : {
+        Authorization : `Bearer ${token}`
+      }
+    });
+    setSelectFourmateurs(response.data.data);
+
+  }
+
+
+  useEffect(()=>{
+    getFourmation()
+  },[]);
 
 
 
@@ -65,32 +84,33 @@ const FormationUpdate = ({formation,setRunEffect,setOpenUpdateDialog}) => {
 
   // function that handle update
   const onSubmit = async (values) => {
-    // const updateloading = toast.loading('Veuillez patienter');
-    // try{
-    //   const response = await customAxios.put(`employes/${employe.id}`,values,{
-    //     headers:{
-    //       Authorization : `Bearer ${token}`
-    //     }
-    //   });
-    //
-    //
-    //   if(response.status == 200){
-    //     toast.dismiss(updateloading);
-    //     setRunEffect( prevState => prevState + 1 );
-    //     setOpenUpdateDialog(false);
-    //
-    //     setTimeout(()=>{ // Short delay before showing success toast
-    //       toast.success("Modifier avec succès",{
-    //         duration: 2000,
-    //       });
-    //     },100)
-    //
-    //   }
-    //
-    // }catch(err){
-    //   console.log(err);
-    //   toast.dismiss(updateloading);
-    // }
+    const updateloading = toast.loading('Veuillez patienter');
+    try{
+      const response = await customAxios.put(`formations/${formation.id}`,values,{
+        headers:{
+          Authorization : `Bearer ${token}`
+        }
+      });
+    
+    
+      if(response.status == 200){
+        toast.dismiss(updateloading);
+        setRunEffect( prevState => prevState + 1 );
+        setOpenUpdateDialog(false);
+    
+        setTimeout(()=>{ // Short delay before showing success toast
+          toast.success("Modifier avec succès",{
+            duration: 2000,
+          });
+        },100)
+    
+      }
+    
+    }catch(err){
+      console.log(err);
+      toast.dismiss(updateloading);
+    }
+
   }
 
   return (
@@ -98,7 +118,9 @@ const FormationUpdate = ({formation,setRunEffect,setOpenUpdateDialog}) => {
         <Form {...form} >
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 w-full mx-auto p-4 rounded-sm  ">
             <div className="space-y-3">
-              {/* matricule input */}
+              <div className="grid grid-cols-2 gap-2" >
+
+                              {/* matricule input */}
               <FormField
                   control={form.control}
                   name="intitule"
@@ -112,6 +134,22 @@ const FormationUpdate = ({formation,setRunEffect,setOpenUpdateDialog}) => {
                       </FormItem>
                   )}
               />
+                             {/* lieu input */}
+                             <FormField
+                    control={form.control}
+                    name="lieu"
+                    render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Lieu</FormLabel>
+                          <FormControl>
+                            <Input  {...field} placeholder='Lieu de formation' />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+              </div>
               {/* description input */}
               <FormField
                   control={form.control}
@@ -228,25 +266,8 @@ const FormationUpdate = ({formation,setRunEffect,setOpenUpdateDialog}) => {
                         </FormItem>
                     )}
                 />
-
-                {/* lieu input */}
-                <FormField
-                    control={form.control}
-                    name="lieu"
-                    render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Lieu</FormLabel>
-                          <FormControl>
-                            <Input  {...field} placeholder='Lieu de formation' />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                    )}
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-2" >
-                {/* nombre_max input */}
-                <FormField
+                                {/* nombre_max input */}
+                                <FormField
                     control={form.control}
                     name="nombre_max"
                     render={({ field }) => (
@@ -259,6 +280,10 @@ const FormationUpdate = ({formation,setRunEffect,setOpenUpdateDialog}) => {
                         </FormItem>
                     )}
                 />
+ 
+              </div>
+              <div className="grid grid-cols-2 gap-2" >
+
                 {/* formateur select input */}
                 <FormField
                     control={form.control}
@@ -274,8 +299,31 @@ const FormationUpdate = ({formation,setRunEffect,setOpenUpdateDialog}) => {
                             </FormControl >
                             <SelectContent  >
                               {
-                                fourmateurs.map(fourmateur => <SelectItem value={fourmateur.id} key={fourmateur.id} >{fourmateur.nom}</SelectItem>)
-                              }
+                                selectFourmateurs.map(fourmateur => <SelectItem value={fourmateur.id} key={fourmateur.id} >{fourmateur.nom}</SelectItem>)
+                              }  
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                {/* status select input */}
+                <FormField
+                    control={form.control}
+                    name="status"
+                    render={({ field }) => (
+                        <FormItem >
+                          <FormLabel>Statut</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}  >
+                            <FormControl>
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Sélectionnez le statut" />
+                              </SelectTrigger>
+                            </FormControl >
+                            <SelectContent  >
+                            <SelectItem value='Planifiee' >Planifiee</SelectItem>
+                            <SelectItem value='En cours' >En cours</SelectItem>
+                            <SelectItem value='Terminé' >Terminé</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -284,7 +332,7 @@ const FormationUpdate = ({formation,setRunEffect,setOpenUpdateDialog}) => {
                 />
               </div>
             </div>
-            <Button type="submit" >Modifier</Button>
+            <Button type="submit" disabled={!form.formState.isDirty}  >Modifier</Button>
           </form>
         </Form>
       </div>

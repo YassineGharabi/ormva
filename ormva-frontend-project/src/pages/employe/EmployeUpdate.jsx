@@ -172,7 +172,7 @@ const EmployeUpdate = ({employe,setRunEffect,setOpenUpdateDialog}) => {
                     />
                   </div>
                 </div>
-                <Button type="submit" >Modifier</Button>
+                <Button type="submit" disabled={!form.formState.isDirty}  >Modifier</Button>
               </form>
             </Form>
     </div>
