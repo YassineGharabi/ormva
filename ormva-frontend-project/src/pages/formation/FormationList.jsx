@@ -36,6 +36,8 @@ import React, { useContext, useEffect, useState } from 'react'
 
 import {  Trash2Icon } from "lucide-react"
 import { toast } from 'sonner';
+import FormationUpdate from "@/pages/formation/FormationUpdate.jsx";
+import EmployeUpdate from "@/pages/employe/EmployeUpdate.jsx";
 
 
 
@@ -125,7 +127,7 @@ const FormationList = () => {
       id: "actions",
       cell: ({ row }) => {
         const formation = row.original
-        const {id  } = formation;
+        const {id , intitule  } = formation;
         const [openUpdateDialog,setOpenUpdateDialog] = useState(false);
         return (
           <DropdownMenu>
@@ -140,18 +142,18 @@ const FormationList = () => {
               <DropdownMenuSeparator />
               <DropdownMenuItem>Ajouter des documents</DropdownMenuItem>
 
-              <Dialog open={openUpdateDialog} setOpenUpdateDialog={setOpenUpdateDialog} >
-              <DialogTrigger className='flex gap-2 items-center text-sm px-2 py-1 rounded-sm w-full hover:bg-gray-600/5 dark:hover:bg-[#262626] my-1' >
-                <SquarePen className="h-4 w-4 text-gray-600 cursor-pointer" /> Modifier
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Formailire de Modifier</DialogTitle>
-                  <DialogDescription>Employe : </DialogDescription>
-                  {/* update page */}
-                </DialogHeader>
-              </DialogContent>
-            </Dialog>
+              <Dialog open={openUpdateDialog} onOpenChange={setOpenUpdateDialog} >
+                <DialogTrigger className='flex gap-2 items-center text-sm px-2 py-1 rounded-sm w-full hover:bg-gray-600/5 dark:hover:bg-[#262626] my-1' >
+                  <SquarePen className="h-4 w-4 text-gray-600 cursor-pointer" /> Modifier
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Formailire de Modifier</DialogTitle>
+                    <DialogDescription>Formation : {intitule} </DialogDescription>
+                    <FormationUpdate formation={formation} setOpenUpdateDialog={setOpenUpdateDialog} setRunEffect={setRunEffect} />
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
 
               <AlertDialog>
               <AlertDialogTrigger className='flex gap-2 items-center text-sm px-2 py-1 rounded-sm w-full hover:bg-gray-600/5 dark:hover:bg-[#262626] my-1' > <Trash className='w-4 h-4 text-gray-600' /> Supprimer</AlertDialogTrigger>

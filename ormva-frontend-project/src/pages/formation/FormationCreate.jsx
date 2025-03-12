@@ -35,28 +35,24 @@ import { useNavigate } from "react-router-dom";
 import { CalendarIcon } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
 
-
-
-
-
-
-
 //schema of form validation
 const formSchema = yup.object({
-  intitule: yup.string().required().min(3),
-  description: yup.string().required().min(10).max(50),
-  date_debut: yup.string().required(),
-  date_debut: yup.string().required(),
-  duree: yup.string().required(),
-  lieu: yup.string().min(3).required(),
-  nombre_max: yup.string().required(),
-  formateur_id: yup.string().required(),
+  intitule: yup.string().min(3,'Doit comporter au moins 3 caractères').required('required field'),
+  description: yup.string().min(10,'Doit comporter au moins 10 caractères').required('Champ obligatoire'),
+  date_debut: yup.string().required('Champ obligatoire'),
+  date_fin: yup.string().required('Champ obligatoire'),
+  duree: yup.string().required('Champ obligatoire'),
+  lieu: yup.string().required('Champ obligatoire'),
+  nombre_max: yup.string().required('Champ obligatoire'),
+  formateur_id: yup.string().required('Champ obligatoire'),
 })
 
 const FormationCreate = () => {
 
   const { token , fourmateurs , setFourmateurs } = useContext(appContext);
+
   const nav = useNavigate();
+
   // for select data
   const getFourmateurs = async () => {
     try {
@@ -90,8 +86,6 @@ const FormationCreate = () => {
       nombre_max: ""
     },
   });
-
-
 
 
   const onSubmit = async (values) => {
@@ -246,9 +240,7 @@ const FormationCreate = () => {
                     </FormItem>
                   )}
                 />
-
               </div>
-
               {/* duree input */}
               <FormField
                 control={form.control}
@@ -263,7 +255,6 @@ const FormationCreate = () => {
                   </FormItem>
                 )}
               />
-
             </div>
             {/* lieu input */}
             <FormField
@@ -279,12 +270,7 @@ const FormationCreate = () => {
                 </FormItem>
               )}
             />
-
-
-
             <div className="grid grid-cols-2 gap-2" >
-
-
               {/* nombre_max input */}
               <FormField
                 control={form.control}
@@ -299,7 +285,6 @@ const FormationCreate = () => {
                   </FormItem>
                 )}
               />
-
               {/* formateur select input */}
               <FormField
                 control={form.control}
@@ -315,7 +300,7 @@ const FormationCreate = () => {
                       </FormControl >
                       <SelectContent  >
                         {
-                          fourmateurs.map(fourmateur => <SelectItem value={fourmateur.id} >{fourmateur.nom}</SelectItem>)
+                          fourmateurs.map(fourmateur => <SelectItem value={fourmateur.id} key={fourmateur.id} >{fourmateur.nom}</SelectItem>)
                         }
                       </SelectContent>
                     </Select>
@@ -323,7 +308,6 @@ const FormationCreate = () => {
                   </FormItem>
                 )}
               />
-
             </div>
           </div>
           <Button type="submit" >Créer</Button>
