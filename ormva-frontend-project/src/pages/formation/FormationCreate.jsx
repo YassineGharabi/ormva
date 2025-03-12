@@ -7,6 +7,13 @@ import {
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
   Form,
   FormControl,
   FormField,
@@ -21,7 +28,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup';
 import customAxios from "@/api/customAxios";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { appContext } from "@/context/ContextProvider";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
@@ -43,13 +50,34 @@ const formSchema = yup.object({
   duree: yup.string().required(),
   lieu: yup.string().min(3).required(),
   nombre_max: yup.string().required(),
-
+  formateur_id: yup.string().required(),
 })
 
 const FormationCreate = () => {
 
-  const { token } = useContext(appContext);
+  const { token , fourmateurs , setFourmateurs } = useContext(appContext);
   const nav = useNavigate();
+  // for select data
+  const getFourmateurs = async () => {
+    try {
+      const response = await customAxios.get('fourmateurs', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (response.status == 200) {
+        setFourmateurs(response.data.data);
+      }
+
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  useEffect(() => {
+    getFourmateurs();
+  }, []);
 
 
   const form = useForm({
@@ -65,8 +93,8 @@ const FormationCreate = () => {
 
 
 
+
   const onSubmit = async (values) => {
-    console.log(values);
     try {
       const createLoading = toast.loading('Veuillez patienter');
       const response = await customAxios.post('formations', values, {
@@ -237,7 +265,6 @@ const FormationCreate = () => {
               />
 
             </div>
-
             {/* lieu input */}
             <FormField
               control={form.control}
@@ -253,20 +280,51 @@ const FormationCreate = () => {
               )}
             />
 
-            {/* nombre_max input */}
-            <FormField
-              control={form.control}
-              name="nombre_max"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nombre maximum</FormLabel>
-                  <FormControl>
-                    <Input  {...field} placeholder='Nombre maximum de participants' />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+
+            <div className="grid grid-cols-2 gap-2" >
+
+
+              {/* nombre_max input */}
+              <FormField
+                control={form.control}
+                name="nombre_max"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nombre maximum</FormLabel>
+                    <FormControl>
+                      <Input  {...field} placeholder='Nombre maximum de participants' />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* formateur select input */}
+              <FormField
+                control={form.control}
+                name="formateur_id"
+                render={({ field }) => (
+                  <FormItem >
+                    <FormLabel>Fourmateur</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}  >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Sélectionnez un formateur" />
+                        </SelectTrigger>
+                      </FormControl >
+                      <SelectContent  >
+                        {
+                          fourmateurs.map(fourmateur => <SelectItem value={fourmateur.id} >{fourmateur.nom}</SelectItem>)
+                        }
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+            </div>
           </div>
           <Button type="submit" >Créer</Button>
         </form>

@@ -38,6 +38,7 @@ const FourmateurList = () => {
   // to run effect to get fourmateurs after updating
   const [runEffect,setRunEffect] = useState(0);
 
+
   const handleDelete = async (id) => {
     const deletingLoading = toast.loading('Veuillez patienter');
     try {
