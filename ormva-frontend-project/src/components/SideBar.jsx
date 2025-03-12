@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ChartColumn, Home, User, Users } from "lucide-react"
+import { Brain, BriefcaseBusiness, ChartColumn,  Users } from "lucide-react"
 
 import {
   Sidebar,
@@ -26,12 +26,17 @@ const items = [
   {
     title: "Fourmateur",
     url: "fourmateur",
-    icon: User,
+    icon: BriefcaseBusiness,
   },
   {
     title: "Employes",
     url: "employes",
     icon: Users,
+  },
+  {
+    title: "Formations",
+    url: "formations",
+    icon: Brain,
   },
 ]
 

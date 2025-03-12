@@ -8,6 +8,7 @@ const ContextProvider = ({children}) => {
     const [user,setUser] = useState({});
     const [fourmateurs,setFourmateurs] = useState([]);
     const [employes,setEmployes] = useState([]);
+    const [formations,setFormations] = useState([]);
 
     // function to get the current user if you have token
     const getUser = async () => {
@@ -34,7 +35,8 @@ const ContextProvider = ({children}) => {
     setToken,token,
     user,
     fourmateurs,setFourmateurs,
-    employes,setEmployes
+    employes,setEmployes,
+    formations,setFormations
     }} >
         {children}
     </appContext.Provider>

@@ -36,7 +36,6 @@ import React, { useContext, useEffect, useState } from 'react'
 
 import {  Trash2Icon } from "lucide-react"
 import { toast } from 'sonner';
-import EmployeUpdate from './EmployeUpdate';
 
 
 
@@ -44,10 +43,11 @@ import EmployeUpdate from './EmployeUpdate';
 
 
 
-const Employelist = () => {
+
+const FormationList = () => {
 
 
-  const { token , setEmployes , employes } = useContext(appContext);
+  const { token , formations , setFormations } = useContext(appContext);
   // to run effect to get fourmateurs after updating
   const [runEffect,setRunEffect] = useState(0);
 
@@ -56,7 +56,7 @@ const Employelist = () => {
     const deletingLoading = toast.loading('Veuillez patienter');
     try {
       // delete fourmateur on db
-      const response = await customAxios.delete(`employes/${id}`, {
+      const response = await customAxios.delete(`formations/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
@@ -65,7 +65,7 @@ const Employelist = () => {
       // delete fourmateur in client side
       if (response.status == 200) {
         toast.dismiss(deletingLoading);
-        setEmployes(employes.filter(employe => employe.id !== id));
+        setFormations(formations.filter(formation => formation.id !== id));
 
         setTimeout(()=>{ // Short delay before showing success toast to not be prevent by toast dismiss
           toast.success(response.data.message, {
@@ -89,35 +89,43 @@ const Employelist = () => {
       header: "#ID",
     },
     {
-      accessorKey: "nom_complet",
-      header: "Nom",
+      accessorKey: "intitule",
+      header: "Intitule",
     },
     {
-      accessorKey: "matricule",
-      header: "Matricule",
+      accessorKey: "description",
+      header: "Description",
     },
     {
-      accessorKey: "cin",
-      header: "Cin",
+      accessorKey: "date_debut",
+      header: "Date de debut",
     },
     {
-      accessorKey: "email",
-      header: "Email",
+      accessorKey: "date_fin",
+      header: "date de fin",
     },
     {
-      accessorKey: "service",
-      header: "Service",
+      accessorKey: "duree",
+      header: "Duree",
     },
     {
-      accessorKey: "bureau",
-      header: "Bureau",
+      accessorKey: "lieu",
+      header: "Lieu",
+    },
+    {
+      accessorKey: "nombre_max",
+      header: "nombre maximum",
+    },
+    {
+      accessorKey: "formateur.nom",
+      header: "Nom du formateur",
     },
     // column of actions
     {
       id: "actions",
       cell: ({ row }) => {
-        const employe = row.original
-        const {id , nom_complet} = employe;
+        const formation = row.original
+        const {id  } = formation;
         const [openUpdateDialog,setOpenUpdateDialog] = useState(false);
         return (
           <DropdownMenu>
@@ -130,17 +138,17 @@ const Employelist = () => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Suivi les fourmations</DropdownMenuItem>
+              <DropdownMenuItem>Ajouter des documents</DropdownMenuItem>
 
-              <Dialog open={openUpdateDialog} onOpenChange={setOpenUpdateDialog} >
+              <Dialog open={openUpdateDialog} setOpenUpdateDialog={setOpenUpdateDialog} >
               <DialogTrigger className='flex gap-2 items-center text-sm px-2 py-1 rounded-sm w-full hover:bg-gray-600/5 dark:hover:bg-[#262626] my-1' >
                 <SquarePen className="h-4 w-4 text-gray-600 cursor-pointer" /> Modifier
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Formailire de Modifier</DialogTitle>
-                  <DialogDescription>Employe : {nom_complet} </DialogDescription>
-                  <EmployeUpdate employe={employe} setOpenUpdateDialog={setOpenUpdateDialog} setRunEffect={setRunEffect} />
+                  <DialogDescription>Employe : </DialogDescription>
+                  {/* update page */}
                 </DialogHeader>
               </DialogContent>
             </Dialog>
@@ -151,12 +159,12 @@ const Employelist = () => {
                 <AlertDialogHeader>
                   <AlertDialogTitle>En êtes-vous absolument sûre ?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Cela supprimera définitivement ce employe .
+                    Cela supprimera définitivement cette formation .
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Annuler</AlertDialogCancel>
-                  <AlertDialogAction onClick={()=>handleDelete(id)} >Supprimer</AlertDialogAction>
+                  <AlertDialogAction onClick={()=>handleDelete(id)}  >Supprimer</AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
@@ -167,17 +175,17 @@ const Employelist = () => {
     },
     
   ];
-
-  const getEmployes = async () => {
+  //GET ALL FORMATIONS
+  const getFormations = async () => {
     try {
-      const response = await customAxios.get('employes', {
+      const response = await customAxios.get('formations', {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
 
       if (response.status == 200) {
-        setEmployes(response.data.data);
+        setFormations(response.data.data);
       }
 
     } catch (err) {
@@ -186,15 +194,14 @@ const Employelist = () => {
   }
 
   useEffect(() => {
-    getEmployes();
+    getFormations();
   }, [runEffect]);
 
   return (
     <>
-      <DataTable columns={columns} data={employes} />
+      <DataTable columns={columns} data={formations} />
     </>
   )
 }
 
-export default Employelist
-
+export default FormationList

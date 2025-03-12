@@ -3,6 +3,9 @@ import LoginPage from "@/pages/auth/LoginPage";
 import EmployeCreate from "@/pages/employe/EmployeCreate";
 import EmployeLayout from "@/pages/employe/EmployeLayout";
 import Employelist from "@/pages/employe/Employelist";
+import FormationCreate from "@/pages/formation/FormationCreate";
+import FormationLayout from "@/pages/formation/FormationLayout";
+import FormationList from "@/pages/formation/FormationList";
 import FourmateurCreate from "@/pages/fourmateur/FourmateurCreate";
 import FourmateurLayout from "@/pages/fourmateur/FourmateurLayout";
 import FourmateurList from "@/pages/fourmateur/FourmateurList";
@@ -53,6 +56,20 @@ export const router = createBrowserRouter([
                         path : 'create' ,
                         element : <EmployeCreate/>
                     },
+                ]
+            },
+            {
+                path: 'formations',
+                element : <FormationLayout/>,
+                children : [
+                    {
+                        path : '',
+                        element : <FormationList/>
+                    },
+                    {
+                        path : 'create' ,
+                        element : <FormationCreate/>
+                    }
                 ]
             }
         ]

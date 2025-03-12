@@ -14,7 +14,8 @@ class FormationController extends Controller
      */
     public function index()
     {
-        //
+        // using Eager Loading for performence for return for each formation thier formateur
+        return FormationResource::collection(Formation::with('formateur')->get());
     }
 
     /**
