@@ -1,6 +1,8 @@
 import customAxios from '@/api/customAxios';
-import { DataTable } from '@/components/table/Data-table'
+import { DataTable } from '@/components/table/Data-table';
 import { appContext } from '@/context/ContextProvider';
+import React, { useContext, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,40 +22,61 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-
-
-import React, { useContext, useEffect, useState } from 'react'
-
-import { SquarePen, Trash, Trash2Icon } from "lucide-react"
+import { SquarePen, Trash, Trash2Icon } from 'lucide-react';
 import { toast } from 'sonner';
-import FourmateurUpdate from './FourmateurUpdate';
 
+const DocumentList = () => {
 
+  const {id} = useParams();
 
+  const {token} = useContext(appContext);
 
-const FourmateurList = () => {
+  const [documents,setDocuments] = useState([]);
 
+  // function to get all docs belongs to this formation
+  const getDocs = async () =>{
 
-  const { token , setFourmateurs , fourmateurs} = useContext(appContext);
-  // to run effect to get fourmateurs after updating
-  const [runEffect,setRunEffect] = useState(0);
+    try{
 
-
-  const handleDelete = async (id) => {
-    const deletingLoading = toast.loading('Veuillez patienter');
-    try {
-      // delete fourmateur on db
-      const response = await customAxios.delete(`fourmateurs/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await customAxios.get(`getdocs/${id}`,{
+        headers : {
+          Authorization : `Bearer ${token}`
         }
-      });
+      })
 
-      // delete fourmateur in client side
-      if (response.status == 200) {
+      if(response.status == 200)
+      {
+        setDocuments(response.data.data);
+      }
+      
+    }catch(err){
+      console.error(err);
+    }
+  }
+
+  // call this function in the first render of componant
+  useEffect(()=>{
+    getDocs();
+  },[]);
+
+
+  // function that delete doc 
+
+  const handleDelete = async (id) =>{
+    const deletingLoading = toast.loading('Veuillez patienter');
+    try{
+
+      
+      const response = await customAxios.delete(`doc_pedagogiques/${id}`,{
+        headers : {
+          Authorization : `Bearer ${token}`
+        }
+      })
+
+      if( response.status == 200 )
+      {
         toast.dismiss(deletingLoading);
-        setFourmateurs(fourmateurs.filter(fourmateur => fourmateur.id !== id));
-
+        setDocuments( documents.filter( document => document.id != id ) );
         setTimeout(()=>{ // Short delay before showing success toast to not be prevent by toast dismiss
           toast.success(response.data.message, {
             duration: 2000,
@@ -63,13 +86,14 @@ const FourmateurList = () => {
 
       }
 
-    } catch (err) {
-      console.error(err);
-      toast.dismiss(deletingLoading);
-
+    }catch(err){
+      console.error(err)
     }
 
+
   }
+
+
   // columns of table
   const columns = [
     {
@@ -80,27 +104,24 @@ const FourmateurList = () => {
       },
     },
     {
-      accessorKey: "nom",
-      header: "Nom",
+      accessorKey: "file",
+      header: "File",
+      cell: ({ row }) => {
+        const file = row.getValue("file")
+        return <a href={file} className='text-blue-500 hover:underline' target="_blank"  >Télécharger</a>
+      },
     },
     {
-      accessorKey: "contact",
-      header: "Contact",
+      accessorKey: "type",
+      header: "Type",
     },
-    {
-      accessorKey: "domain",
-      header: "Domain",
-    },
-    {
-      accessorKey: "entreprise",
-      header: "Entreprise",
-    },
+
     // column of actions
     {
       id: "actions",
       cell: ({ row }) => {
-        const fourmateur = row.original
-        const { id, nom } = fourmateur;
+        const document = row.original
+        const { id , type } = document;
         const [openUpdateDialog,setOpenUpdateDialog] = useState(false);
 
         return (
@@ -111,9 +132,9 @@ const FourmateurList = () => {
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Formailire de Modifier</DialogTitle>
-                  <DialogDescription>Fourmateur : {nom}</DialogDescription>
-                  <FourmateurUpdate fourmateur={fourmateur} setOpenUpdateDialog={setOpenUpdateDialog} setRunEffect={setRunEffect} />
+                  <DialogTitle>Formailire de Modification</DialogTitle>
+                  <DialogDescription>Document : </DialogDescription>
+                  {/* <FourmateurUpdate fourmateur={fourmateur} setOpenUpdateDialog={setOpenUpdateDialog} setRunEffect={setRunEffect} /> */}
                 </DialogHeader>
               </DialogContent>
             </Dialog>
@@ -124,7 +145,7 @@ const FourmateurList = () => {
                 <AlertDialogHeader>
                   <AlertDialogTitle>En êtes-vous absolument sûre ?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Cela supprimera définitivement ce fourmateur {nom}.
+                    Cela supprimera définitivement ce document {type}.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -138,33 +159,15 @@ const FourmateurList = () => {
       },
     },
   ];
+  
 
-  const getFourmateurs = async () => {
-    try {
-      const response = await customAxios.get('fourmateurs', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
 
-      if (response.status == 200) {
-        setFourmateurs(response.data.data);
-      }
-
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  useEffect(() => {
-    getFourmateurs();
-  }, [runEffect]);
 
   return (
-    <>
-      <DataTable columns={columns} data={fourmateurs} />
-    </>
+        <>
+          <DataTable columns={columns} data={documents} />
+        </>
   )
 }
 
-export default FourmateurList
+export default DocumentList

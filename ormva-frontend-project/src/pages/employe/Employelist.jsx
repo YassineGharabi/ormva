@@ -87,6 +87,9 @@ const Employelist = () => {
     {
       accessorKey: "id",
       header: "#ID",
+      cell: ({ row  }) => {
+        return <span >{row.index + 1}</span>
+      },
     },
     {
       accessorKey: "nom_complet",

@@ -19,6 +19,7 @@ Route::apiResource('employes',EmployeController::class);
 Route::apiResource('formations',FormationController::class);
 Route::apiResource('doc_pedagogiques',Doc_pedagogiqueController::class);
 Route::get('/assign-employe',[EmployeController::class,'assignEmployeToFormation']);
+Route::get('/getdocs/{id}',[Doc_pedagogiqueController::class,'getdocs']);
 
 });
 

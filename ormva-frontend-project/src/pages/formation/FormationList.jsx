@@ -1,7 +1,7 @@
 import customAxios from '@/api/customAxios';
 import { DataTable } from '@/components/table/Data-table'
 import { appContext } from '@/context/ContextProvider';
-import { MoreHorizontal, SquarePen, Trash } from "lucide-react"
+import { Folder, MoreHorizontal, SquarePen, Trash } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -38,6 +38,7 @@ import {  Trash2Icon } from "lucide-react"
 import { toast } from 'sonner';
 import FormationUpdate from "@/pages/formation/FormationUpdate.jsx";
 import EmployeUpdate from "@/pages/employe/EmployeUpdate.jsx";
+import { Link } from 'react-router-dom';
 
 
 
@@ -89,6 +90,9 @@ const FormationList = () => {
     {
       accessorKey: "id",
       header: "#ID",
+      cell: ({ row  }) => {
+        return <span >{row.index + 1}</span>
+      },
     },
     {
       accessorKey: "intitule",
@@ -144,7 +148,9 @@ const FormationList = () => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Ajouter des documents</DropdownMenuItem>
+              <Link to={`/dashboard/documents/${id}`} >
+                <DropdownMenuItem> <Folder className="h-4 w-4 text-gray-600 cursor-pointer" /> Documents pedagogique</DropdownMenuItem>
+              </Link>
 
               <Dialog open={openUpdateDialog} onOpenChange={setOpenUpdateDialog} >
                 <DialogTrigger className='flex gap-2 items-center text-sm px-2 py-1 rounded-sm w-full hover:bg-gray-600/5 dark:hover:bg-[#262626] my-1' >
@@ -180,7 +186,7 @@ const FormationList = () => {
       },
     },
     
-  ];
+  ]; 
   //GET ALL FORMATIONS
   const getFormations = async () => {
     try {

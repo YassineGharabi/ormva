@@ -1,5 +1,8 @@
 import RequireAuth from "@/components/requireAuth/RequireAuth";
 import LoginPage from "@/pages/auth/LoginPage";
+import DocumentCreate from "@/pages/document/DocumentCreate";
+import DocumentLayout from "@/pages/document/DocumentLayout";
+import DocumentList from "@/pages/document/DocumentList";
 import EmployeCreate from "@/pages/employe/EmployeCreate";
 import EmployeLayout from "@/pages/employe/EmployeLayout";
 import Employelist from "@/pages/employe/Employelist";
@@ -69,6 +72,20 @@ export const router = createBrowserRouter([
                     {
                         path : 'create' ,
                         element : <FormationCreate/>
+                    }
+                ]
+            },
+            {
+                path: 'documents/:id',
+                element : <DocumentLayout/>,
+                children : [
+                    {
+                        path : '',
+                        element : <DocumentList/>
+                    },
+                    {
+                        path : 'create' ,
+                        element : <DocumentCreate/>
                     }
                 ]
             }

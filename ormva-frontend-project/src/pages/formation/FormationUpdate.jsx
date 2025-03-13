@@ -284,52 +284,52 @@ const FormationUpdate = ({formation,setRunEffect,setOpenUpdateDialog}) => {
               </div>
               <div className="grid grid-cols-2 gap-2" >
 
-                {/* formateur select input */}
-                <FormField
-                    control={form.control}
-                    name="formateur_id"
-                    render={({ field }) => (
-                        <FormItem >
-                          <FormLabel>Fourmateur</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}  >
-                            <FormControl>
-                              <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Sélectionnez un formateur" />
-                              </SelectTrigger>
-                            </FormControl >
-                            <SelectContent  >
-                              {
-                                selectFourmateurs.map(fourmateur => <SelectItem value={fourmateur.id} key={fourmateur.id} >{fourmateur.nom}</SelectItem>)
-                              }  
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                {/* status select input */}
-                <FormField
-                    control={form.control}
-                    name="status"
-                    render={({ field }) => (
-                        <FormItem >
-                          <FormLabel>Statut</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}  >
-                            <FormControl>
-                              <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Sélectionnez le statut" />
-                              </SelectTrigger>
-                            </FormControl >
-                            <SelectContent  >
-                            <SelectItem value='Planifiee' >Planifiee</SelectItem>
-                            <SelectItem value='En cours' >En cours</SelectItem>
-                            <SelectItem value='Terminé' >Terminé</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                  {/* formateur select input */}
+                  <FormField
+                      control={form.control}
+                      name="formateur_id"
+                      render={({ field }) => (
+                          <FormItem >
+                            <FormLabel>Fourmateur</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}  >
+                              <FormControl>
+                                <SelectTrigger className="w-full">
+                                  <SelectValue placeholder="Sélectionnez un formateur" />
+                                </SelectTrigger>
+                              </FormControl >
+                              <SelectContent  >
+                                {
+                                  selectFourmateurs.map(fourmateur => <SelectItem value={fourmateur.id} key={fourmateur.id} >{fourmateur.nom}</SelectItem>)
+                                }  
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                      )}
+                  />
+                  {/* status select input */}
+                  <FormField
+                      control={form.control}
+                      name="status"
+                      render={({ field }) => (
+                          <FormItem >
+                            <FormLabel>Statut</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}  >
+                              <FormControl>
+                                <SelectTrigger className="w-full">
+                                  <SelectValue placeholder="Sélectionnez le statut" />
+                                </SelectTrigger>
+                              </FormControl >
+                              <SelectContent  >
+                              <SelectItem value='Planifiee' >Planifiee</SelectItem>
+                              <SelectItem value='En cours' >En cours</SelectItem>
+                              <SelectItem value='Terminé' >Terminé</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                      )}
+                  />
               </div>
             </div>
             <Button type="submit" disabled={!form.formState.isDirty}  >Modifier</Button>

@@ -15,6 +15,7 @@ import * as yup from 'yup';
 import customAxios from "@/api/customAxios"
 import { appContext } from "@/context/ContextProvider"
 import { useNavigate } from "react-router-dom"
+import { toast } from "sonner"
 
 
 //schema of form validation
@@ -42,16 +43,22 @@ const LoginPage = () => {
   //function that handle submit of form 
 
   const onSubmit = async (values) => {
+    const createLoading = toast.loading('Veuillez patienter');
         try{
             const response = await customAxios.post('login',values);
-    
+
             // catch the error of The provided credentials are incorrect.
             if(response.data.errors){
                 setError(response.data.errors.email[0]);
             }else{
+              toast.dismiss(createLoading);
+              setTimeout(() => {
+                toast.success('Vous êtes connecté', {
+                  duration: 3000
+                });
+              }, 100)
               setToken(response.data.token);
               localStorage.setItem('token',response.data.token);
-              
               nav('/dashboard');
             }
 

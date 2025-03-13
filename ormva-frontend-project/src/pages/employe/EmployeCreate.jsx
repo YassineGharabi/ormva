@@ -52,7 +52,6 @@ const EmployeCreate = () => {
 
 
   const onSubmit = async (values) => {
-    console.log(values);
     try {
       const createLoading = toast.loading('Veuillez patienter');
       const response = await customAxios.post('employes', values, {

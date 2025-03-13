@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Doc_pedagogique;
 use Illuminate\Http\Request;
 use App\Http\Requests\Doc_pedagogiqueRequest;
+use App\Http\Resources\Doc_pedagogiqueResource;
 
 class Doc_pedagogiqueController extends Controller
 {
@@ -13,7 +14,7 @@ class Doc_pedagogiqueController extends Controller
      */
     public function index()
     {
-        return Doc_pedagogique::all();
+        return Doc_pedagogiqueResource::collection(Doc_pedagogique::all());
     }
 
     /**
@@ -21,11 +22,16 @@ class Doc_pedagogiqueController extends Controller
      */
     public function store(Doc_pedagogiqueRequest $request)
     {
+
         $fields = $request->validated();
 
-        $document = Doc_pedagogique::create($fields);
+        if($request->hasfile('file')){
 
-        return $document ;
+            $fields['file'] = $request->file('file')->store('documents','public');
+
+            return Doc_pedagogique::create($fields);
+
+        }
     }
 
     /**
@@ -60,4 +66,12 @@ class Doc_pedagogiqueController extends Controller
             'message' => 'Suppression effectuée avec succès',
         ];
     }
+
+    // doccument lies a une formation
+
+    public function getdocs(Request $request){
+        return Doc_pedagogiqueResource::collection(Doc_pedagogique::where( 'formation_id' , '=' , $request->id )->get());
+    }
+
+
 }

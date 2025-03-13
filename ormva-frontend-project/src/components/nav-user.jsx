@@ -26,6 +26,7 @@ import { useContext } from "react";
 import { appContext } from "@/context/ContextProvider";
 import customAxios from "@/api/customAxios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export function NavUser(){
  
@@ -34,7 +35,7 @@ export function NavUser(){
   const {token} = useContext(appContext);
 
   const handleLogout = async () =>{
-
+    const createLoading = toast.loading('Veuillez patienter');
     try{
 
       const response = await customAxios.post('logout',{},{
@@ -44,6 +45,12 @@ export function NavUser(){
       });
   
       if(response.status == 200){
+        toast.dismiss(createLoading);
+        setTimeout(() => {
+          toast.success('Vous êtes déconnecté', {
+            duration: 2000
+          });
+        }, 100)
         localStorage.removeItem('token');
         nav('/');
       }
