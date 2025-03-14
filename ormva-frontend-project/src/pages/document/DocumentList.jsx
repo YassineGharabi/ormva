@@ -24,12 +24,15 @@ import {
 } from "@/components/ui/dialog"
 import { SquarePen, Trash, Trash2Icon } from 'lucide-react';
 import { toast } from 'sonner';
+import DocumentUpdate from './DocumentUpdate';
 
 const DocumentList = () => {
 
   const {id} = useParams();
 
   const {token} = useContext(appContext);
+
+  const [runEffect,setRunEffect] = useState(0);
 
   const [documents,setDocuments] = useState([]);
 
@@ -54,10 +57,10 @@ const DocumentList = () => {
     }
   }
 
-  // call this function in the first render of componant
+  // call this function in the first render of componant and if run effect change
   useEffect(()=>{
     getDocs();
-  },[]);
+  },[runEffect]);
 
 
   // function that delete doc 
@@ -112,6 +115,10 @@ const DocumentList = () => {
       },
     },
     {
+      accessorKey: "fileName",
+      header: "Nom du fichier",
+    },
+    {
       accessorKey: "type",
       header: "Type",
     },
@@ -134,7 +141,7 @@ const DocumentList = () => {
                 <DialogHeader>
                   <DialogTitle>Formailire de Modification</DialogTitle>
                   <DialogDescription>Document : </DialogDescription>
-                  {/* <FourmateurUpdate fourmateur={fourmateur} setOpenUpdateDialog={setOpenUpdateDialog} setRunEffect={setRunEffect} /> */}
+                  <DocumentUpdate document={document} setOpenUpdateDialog={setOpenUpdateDialog} setRunEffect={setRunEffect} />
                 </DialogHeader>
               </DialogContent>
             </Dialog>
@@ -165,6 +172,7 @@ const DocumentList = () => {
 
   return (
         <>
+          <h1>Formation : {documents[0]?.formation.intitule}</h1>
           <DataTable columns={columns} data={documents} />
         </>
   )

@@ -10,6 +10,7 @@ class Doc_pedagogique extends Model
     protected $fillable = [
         'type',
         'file',
+        'fileName',
         'formation_id'
     ];
 

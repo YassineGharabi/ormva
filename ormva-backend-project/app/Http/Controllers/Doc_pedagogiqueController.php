@@ -49,6 +49,14 @@ class Doc_pedagogiqueController extends Controller
     {
         $fields = $request->validated();
 
+
+        // test if request has file to update with if its not return the same file
+        if($request->hasfile('file')){
+            $fields['file'] = $request->file('file')->store('documents','public');
+        }else{
+            $fields['file'] = $doc_pedagogique->file;
+        }
+
         $doc_pedagogique->update($fields);
 
         return $doc_pedagogique;
@@ -70,7 +78,9 @@ class Doc_pedagogiqueController extends Controller
     // doccument lies a une formation
 
     public function getdocs(Request $request){
-        return Doc_pedagogiqueResource::collection(Doc_pedagogique::where( 'formation_id' , '=' , $request->id )->get());
+        $doc = Doc_pedagogique::with('formation')->where( 'formation_id' , '=' , $request->id )->get();
+        // $doc = Doc_pedagogique::where( 'formation_id' , '=' , $request->id )->get();
+        return Doc_pedagogiqueResource::collection($doc);
     }
 
 

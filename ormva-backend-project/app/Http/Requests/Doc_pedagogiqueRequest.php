@@ -23,7 +23,7 @@ class Doc_pedagogiqueRequest extends FormRequest
     {
         return [
             'type' => 'required',
-            'file' => 'required|file|mimes:doc,docx,xls,xlsx,pdf|max:5000',
+            'fileName' => 'required',
             'formation_id' => 'required'
         ];
 

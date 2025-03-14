@@ -12,11 +12,11 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import * as yup from 'yup';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import axios from 'axios';
 import { useContext } from 'react';
 import { appContext } from '@/context/ContextProvider';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
+import axios from 'axios';
 
 //schema of form validation
 const formSchema = yup.object({
@@ -46,7 +46,9 @@ const DocumentCreate = () => {
   const onSubmit = async (values) =>{
     formData.append( "formation_id" , id );
     formData.append( "type" , values.type );
+    formData.append( "fileName" , values.fileName );
     formData.append( "file" , values.file );
+
 
     try{
         const createLoading = toast.loading('Veuillez patienter');
@@ -103,13 +105,27 @@ const DocumentCreate = () => {
                         </FormItem>
                     )}
                 />
+                    {/* fileName input */}
+                    <FormField
+                      control={form.control}
+                      name="fileName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Nom du fichier</FormLabel>
+                          <FormControl>
+                            <Input  {...field} placeholder='Nom du fichier' />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   {/* file input */}
                   <FormField
                     control={form.control}
                     name="file"
                     render={({ field: { onChange, onBlur, ref, value, ...field } }) => (
                       <FormItem>
-                        <FormLabel>File</FormLabel>
+                        <FormLabel>Fichier</FormLabel>
                         <FormControl>
                           <Input
                             type="file"
