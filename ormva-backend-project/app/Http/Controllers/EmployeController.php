@@ -74,6 +74,6 @@ class EmployeController extends Controller
             'presence' => $request->presence
         ]);
 
-        return $employe->formations;
+        return $employe->formations ;
     }
 }
