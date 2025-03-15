@@ -37,6 +37,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import {  Trash2Icon } from "lucide-react"
 import { toast } from 'sonner';
 import EmployeUpdate from './EmployeUpdate';
+import { Link } from 'react-router-dom';
 
 
 
@@ -133,7 +134,9 @@ const Employelist = () => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Suivi les fourmations</DropdownMenuItem>
+              <Link to={`/dashboard/${id}/historique`} >
+                <DropdownMenuItem>Suivi les fourmations</DropdownMenuItem>
+              </Link>
 
               <Dialog open={openUpdateDialog} onOpenChange={setOpenUpdateDialog} >
               <DialogTrigger className='flex gap-2 items-center text-sm px-2 py-1 rounded-sm w-full hover:bg-gray-600/5 dark:hover:bg-[#262626] my-1' >

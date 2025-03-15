@@ -76,4 +76,17 @@ class EmployeController extends Controller
 
         return $employe->formations ;
     }
+
+
+    // get formation belongs to an employe
+
+    public function getEmployeFormationsById(Request $request)
+    {
+        $employe = Employe::findOrFail($request->id);
+
+        return [
+            'formations' => $employe->formations ,
+            'employe' => $employe
+        ];
+    }
 }

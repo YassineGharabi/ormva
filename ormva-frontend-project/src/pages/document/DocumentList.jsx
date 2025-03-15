@@ -172,7 +172,7 @@ const DocumentList = () => {
 
   return (
         <>
-          <h1>Formation : {documents[0]?.formation.intitule}</h1>
+          <h1 className='uppercase tracking-wider' >Formation : {documents[0]?.formation.intitule}</h1>
           <DataTable columns={columns} data={documents} />
         </>
   )

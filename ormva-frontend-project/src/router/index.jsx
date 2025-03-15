@@ -6,6 +6,7 @@ import DocumentList from "@/pages/document/DocumentList";
 import EmployeCreate from "@/pages/employe/EmployeCreate";
 import EmployeLayout from "@/pages/employe/EmployeLayout";
 import Employelist from "@/pages/employe/Employelist";
+import EmpoloyeHistorique from "@/pages/employe/EmpoloyeHistorique";
 import FormationCreate from "@/pages/formation/FormationCreate";
 import FormationLayout from "@/pages/formation/FormationLayout";
 import FormationList from "@/pages/formation/FormationList";
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
                         element : <EmployeCreate/>
                     },
                 ]
+            },
+            {
+                path : ':id/historique' ,
+                element : <EmpoloyeHistorique/>
             },
             {
                 path: 'formations',
