@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeController;
 use App\Http\Controllers\FormationController;
 use App\Http\Controllers\FourmateurController;
+use App\Http\Controllers\GenaratePdfController;
 use App\Http\Controllers\Doc_pedagogiqueController;
 
 Route::get('/user', function (Request $request) {
@@ -22,9 +23,12 @@ Route::post('/assign-employe',[EmployeController::class,'assignEmployeToFormatio
 Route::get('/employe-formations/{id}',[EmployeController::class,'getEmployeFormationsById']);
 Route::get('/getdocs/{id}',[Doc_pedagogiqueController::class,'getdocs']);
 
+
+
+
 });
 
-
+Route::get('/attestation-pdf',[GenaratePdfController::class,'generateAttestationPdf']);
 
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
