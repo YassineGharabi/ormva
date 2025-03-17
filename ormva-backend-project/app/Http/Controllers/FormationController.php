@@ -35,7 +35,7 @@ class FormationController extends Controller
      */
     public function show(Formation $formation)
     {
-        return new FormationResource($formation);
+        return $formation::with('formateur')->where( 'id' , '=' , $formation->id )->get();
     }
 
     /**
@@ -63,6 +63,32 @@ class FormationController extends Controller
         ];
 
     }
+
+    public function formationParticipant(Request $request)
+    {
+        return Formation::with('employes')->find($request->id);
+    }
+
+
+    // this function assign an employe to a formation
+    public function assignEmployeToFormation(Request $request)
+    {
+        $ids = $request->selectedEmployes;
+
+        $formation = Formation::findOrFail($request->id);
+
+        $formation->employes()->attach($ids,[
+            'note' => '???' ,
+            'presence' => false
+        ]);
+
+        return $formation::with('employes')->find($request->id);
+
+    }
+
+
+
+
 
 
 }

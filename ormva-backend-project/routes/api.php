@@ -18,8 +18,9 @@ Route::middleware('auth:sanctum')->group(function(){
 Route::apiResource('fourmateurs',FourmateurController::class);
 Route::apiResource('employes',EmployeController::class);
 Route::apiResource('formations',FormationController::class);
+Route::get('/formation-participant/{id}',[FormationController::class,'formationParticipant']);
+Route::post('/assign-employe/{id}',[FormationController::class,'assignEmployeToFormation']);
 Route::apiResource('doc_pedagogiques',Doc_pedagogiqueController::class);
-Route::post('/assign-employe',[EmployeController::class,'assignEmployeToFormation']);
 Route::get('/employe-formations/{id}',[EmployeController::class,'getEmployeFormationsById']);
 Route::get('/getdocs/{id}',[Doc_pedagogiqueController::class,'getdocs']);
 

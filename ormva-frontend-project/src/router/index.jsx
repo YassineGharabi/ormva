@@ -10,6 +10,8 @@ import EmpoloyeHistorique from "@/pages/employe/EmpoloyeHistorique";
 import FormationCreate from "@/pages/formation/FormationCreate";
 import FormationLayout from "@/pages/formation/FormationLayout";
 import FormationList from "@/pages/formation/FormationList";
+import FormationParticipants from "@/pages/formation/FormationParticipants";
+import FormationShow from "@/pages/formation/FormationShow";
 import FourmateurCreate from "@/pages/fourmateur/FourmateurCreate";
 import FourmateurLayout from "@/pages/fourmateur/FourmateurLayout";
 import FourmateurList from "@/pages/fourmateur/FourmateurList";
@@ -78,7 +80,15 @@ export const router = createBrowserRouter([
                         path : 'create' ,
                         element : <FormationCreate/>
                     }
-                ]
+                ],
+            },
+            {
+                path : 'formation/:id' ,
+                element : <FormationShow/> 
+            },
+            {
+                path : 'formation/:id/participants' ,
+                element : <FormationParticipants/>
             },
             {
                 path: 'documents/:id',

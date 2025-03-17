@@ -15,10 +15,6 @@ class FormationResource extends JsonResource
     public function toArray(Request $request): array
     {
         $values = parent::toArray($request);
-        // if(empty($this->doc_pedagogiques))
-        // {
-        //     $values['doc_pedagogique'] = $this->doc_pedagogiques;
-        // }
         return $values;
     }
 }

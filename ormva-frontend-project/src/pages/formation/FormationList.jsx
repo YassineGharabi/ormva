@@ -1,7 +1,7 @@
 import customAxios from '@/api/customAxios';
 import { DataTable } from '@/components/table/Data-table'
 import { appContext } from '@/context/ContextProvider';
-import { Folder, MoreHorizontal, SquarePen, Trash } from "lucide-react"
+import { Eye, Folder, MoreHorizontal, SquarePen, Trash } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -101,6 +101,10 @@ const FormationList = () => {
     {
       accessorKey: "description",
       header: "Description",
+      cell: ({ row  }) => {
+        const description = row.getValue('description');
+        return <span >{description.length > 20 ? `${description.slice(0,20)}...` : description }</span>
+      },
     },
     {
       accessorKey: "date_debut",
@@ -152,6 +156,12 @@ const FormationList = () => {
                 <DropdownMenuItem> <Folder className="h-4 w-4 text-gray-600 cursor-pointer" /> Documents pedagogique</DropdownMenuItem>
               </Link>
 
+              <Link to={`/dashboard/formation/${id}`} >
+                <DropdownMenuItem> <Eye className="h-4 w-4 text-gray-600 cursor-pointer" />Afficher plus</DropdownMenuItem>
+              </Link>
+
+
+
               <Dialog open={openUpdateDialog} onOpenChange={setOpenUpdateDialog} >
                 <DialogTrigger className='flex gap-2 items-center text-sm px-2 py-1 rounded-sm w-full hover:bg-gray-600/5 dark:hover:bg-[#262626] my-1' >
                   <SquarePen className="h-4 w-4 text-gray-600 cursor-pointer" /> Modifier
@@ -180,7 +190,10 @@ const FormationList = () => {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
+
+
             </DropdownMenuContent>
+
           </DropdownMenu>
         )
       },
