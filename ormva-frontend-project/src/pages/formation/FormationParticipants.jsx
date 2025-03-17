@@ -21,7 +21,9 @@ const FormationParticipants = () => {
 
     const [runEffect , setRunEffect ] = useState(0);
  
-    const [employes,setEmployes] = useState([]);
+    const [employes , setEmployes] = useState([]);
+
+    const [formation , setFormation ] = useState([]);
 
     // function to add partisipants to formation
 
@@ -63,7 +65,6 @@ const FormationParticipants = () => {
   
         if (response.status == 200) {
           setEmployes(response.data.data);
-          console.log(response.data.data);
         }
   
       } catch (err) {
@@ -72,9 +73,7 @@ const FormationParticipants = () => {
     }
   
     useEffect(() => {
-      if(showSelect){
         getEmployes();
-      }
     }, [showSelect]);
   
 
@@ -91,6 +90,7 @@ const FormationParticipants = () => {
     
             if(response.status == 200){
               setParticipants(response.data.employes);
+              setFormation(response.data);
             }
 
         }catch(err){
@@ -135,12 +135,14 @@ const FormationParticipants = () => {
 ];
   return (
     <>
+        <h1 className='uppercase font-semibold tracking-wider' >La liste des participants à la formation  <span className='underline' >{formation?.intitule}</span> </h1>
         <div className={`flex  ${ showSelect ? 'justify-between' : 'justify-end' } `} >
           {
             showSelect &&
             <div className='flex gap-1' >
-                          <div  >
-              <SelectWithSearch options={employes} setSelectedEmployes={setSelectedEmployes} selectedEmployes={selectedEmployes}  />
+            <div >
+              {/* this in some check if the current employe id === partisipant id and filter filtring by this condition */}
+              <SelectWithSearch options={ employes.filter(employe => !participants.some(participant => participant.id === employe.id))} setSelectedEmployes={setSelectedEmployes} selectedEmployes={selectedEmployes}  />
             </div>
             <Button onClick={assignParticipants} className='mt-0.5' >Valider</Button>
             </div>
