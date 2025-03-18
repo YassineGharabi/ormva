@@ -6,9 +6,38 @@ import { appContext } from '@/context/ContextProvider';
 import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { MoreHorizontal, SquarePen, Trash, Trash2Icon } from 'lucide-react';
+import ParticipantUpdate from './ParticipantUpdate';
+
 
 const FormationParticipants = () => {
-
+    // id of current formation
     const {id} = useParams();
 
     const {token} = useContext(appContext);
@@ -102,6 +131,34 @@ const FormationParticipants = () => {
         getParticipants();
     },[runEffect]);
 
+    // function that handle remove employe from formation
+
+    const handleRemove = async ( id , employe_id ) => {
+
+        try{
+          const deletingLoading = toast.loading('Veuillez patienter');
+          const response = await customAxios.post(`remove-employe/${id}`,{ employe_id : employe_id },{
+            headers : {
+              Authorization : `Bearer ${token}`
+            }
+          });
+
+          if( response.status == 200 ){
+            toast.dismiss(deletingLoading);
+            setRunEffect(runEffect + 1);
+            setTimeout(()=>{ // Short delay before showing success toast to not be prevent by toast dismiss
+              toast.success(response.data.message, {
+                duration: 2000,
+                icon: <Trash2Icon />
+              })});
+          }
+          
+        }catch(err){
+          toast.dismiss(deletingLoading);
+          console.error(err);
+        }
+    }
+
 
       // columns of table
   const columns = [
@@ -131,7 +188,61 @@ const FormationParticipants = () => {
     {
       accessorKey: "pivot.note",
       header: "note",
-    }
+    }    // column of actions
+    ,{
+      id: "actions",
+      cell: ({ row }) => {
+        const employe = row.original
+        const employe_id = employe.id;
+        const [openUpdateDialog,setOpenUpdateDialog] = useState(false);
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+
+              <Dialog open={openUpdateDialog} onOpenChange={setOpenUpdateDialog} >
+                <DialogTrigger className='flex gap-2 items-center text-sm px-2 py-1 rounded-sm w-full hover:bg-gray-600/5 dark:hover:bg-[#262626] my-1' >
+                  <SquarePen className="h-4 w-4 text-gray-600 cursor-pointer" /> Modifier
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Formailire de Modification</DialogTitle>
+                    <DialogDescription>Participant : { employe.nom_complet } </DialogDescription>
+                    <ParticipantUpdate employe={employe} id={id} setOpenUpdateDialog={setOpenUpdateDialog} setRunEffect={setRunEffect} />
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+
+              <AlertDialog>
+              <AlertDialogTrigger className='flex gap-2 items-center text-sm px-2 py-1 rounded-sm w-full hover:bg-gray-600/5 dark:hover:bg-[#262626] my-1' > <Trash className='w-4 h-4 text-gray-600' /> Supprimer</AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>En êtes-vous absolument sûre ?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                  Cela retire définitivement l'employé de cette formation.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Annuler</AlertDialogCancel>
+                  <AlertDialogAction onClick={()=>handleRemove( id , employe_id )}  >Supprimer</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
+
+            </DropdownMenuContent>
+
+          </DropdownMenu>
+        )
+      },
+    },
 ];
   return (
     <>

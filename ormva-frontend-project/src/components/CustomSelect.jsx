@@ -20,6 +20,12 @@ const SelectWithSearch = ({ options , setSelectedEmployes , selectedEmployes }) 
     setSearch(""); // Reset search
   };
 
+  // Remove selected option
+  const handleRemove = (id) => {
+    setSelectedOptions(selectedOptions.filter(optionId => optionId !== id));
+    setSelectedEmployes(selectedEmployes.filter(optionId => optionId !== id));
+  };
+
   // Close dropdown when clicking outside
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -70,9 +76,10 @@ const SelectWithSearch = ({ options , setSelectedEmployes , selectedEmployes }) 
           {selectedOptions.map((id) => (
             <span
               key={id}
-              className="px-3 py-1 bg-gray-300 rounded-full text-sm"
+              className="px-3 py-1 bg-gray-300 rounded-full text-sm cursor-pointer"
+              onClick={() => handleRemove(id)}
             >
-              {options.find((opt) => opt.id === id)?.nom_complet} {/* Display 'nom_complet' */}
+              {options.find((opt) => opt.id === id)?.nom_complet} ×
             </span>
           ))}
         </div>

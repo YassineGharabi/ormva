@@ -37,7 +37,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import {  Trash2Icon } from "lucide-react"
 import { toast } from 'sonner';
 import FormationUpdate from "@/pages/formation/FormationUpdate.jsx";
-import EmployeUpdate from "@/pages/employe/EmployeUpdate.jsx";
 import { Link } from 'react-router-dom';
 
 

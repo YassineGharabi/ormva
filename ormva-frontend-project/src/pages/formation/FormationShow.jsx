@@ -37,40 +37,40 @@ const FormationShow = () => {
 
 
   return (
-    <div className='flex justify-center mt-10 ' >
+    <div className='flex justify-start mt-10 bg-[#FAFAFA] ' >
         {/* show formation */}
-        <div className='space-y-3 p-8 bg-[#FAFAFA] rounded-md dark:bg-[#171717]' >
+        <div className='space-y-3 p-8  rounded-md dark:bg-[#171717] w-full' >
           <p className='space-x-4' >
             <span className='font-semibold text-xl uppercase' >Intitule :</span>
-            <span className='text-lg uppercase' >{formation[0]?.intitule}</span>
+            <span className='text-lg capitalize' >{formation[0]?.intitule}</span>
           </p>
           <p className='space-x-4' >
             <span className='font-semibold text-xl uppercase' >Description :</span>
-            <span className='text-lg uppercase' >{formation[0]?.description}</span>
+            <span className='text-lg capitalize ' >{formation[0]?.description}</span>
           </p>
           <p className='space-x-4' >
             <span className='font-semibold text-xl uppercase' >Date de debut :</span>
-            <span className='text-lg uppercase' >{formation[0]?.date_debut}</span>
+            <span className='text-lg capitalize' >{formation[0]?.date_debut}</span>
           </p>
           <p className='space-x-4' >
             <span className='font-semibold text-xl uppercase' >Date de fin :</span>
-            <span className='text-lg uppercase' >{formation[0]?.date_fin}</span>
+            <span className='text-lg capitalize' >{formation[0]?.date_fin}</span>
           </p>
           <p className='space-x-4' >
             <span className='font-semibold text-xl uppercase' >Duree :</span>
-            <span className='text-lg uppercase' >{formation[0]?.duree}</span>
+            <span className='text-lg capitalize' >{formation[0]?.duree}</span>
           </p>
           <p className='space-x-4' >
             <span className='font-semibold text-xl uppercase' >Lieu :</span>
-            <span className='text-lg uppercase' >{formation[0]?.lieu}</span>
+            <span className='text-lg capitalize' >{formation[0]?.lieu}</span>
           </p>
           <p className='space-x-4' >
             <span className='font-semibold text-xl uppercase' >Nombre maximum de participants :</span>
-            <span className='text-lg uppercase' >{formation[0]?.nombre_max}</span>
+            <span className='text-lg capitalize' >{formation[0]?.nombre_max}</span>
           </p>
           <p className='space-x-4' >
             <span className='font-semibold text-xl uppercase' >Formateur :</span>
-            <span className='text-lg uppercase' >{formation[0]?.formateur.nom}</span>
+            <span className='text-lg capitalize' >{formation[0]?.formateur.nom}</span>
           </p>
           <div className='flex justify-end' >
           <Link to='participants' >

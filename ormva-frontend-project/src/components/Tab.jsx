@@ -9,7 +9,7 @@ const Tab = ({item}) => {
                 <Link to='' ><TabsTrigger value="account">liste</TabsTrigger></Link>
                <Link to='create'><TabsTrigger value="password">Créer</TabsTrigger></Link>
             </TabsList>
-            <TabsContent value="account" className='uppercase font-semibold tracking-wider'>La liste de {item}</TabsContent>
+            <TabsContent value="account" className='uppercase font-semibold tracking-wider'>La liste des {item}</TabsContent>
             <TabsContent value="password" className='uppercase font-semibold tracking-wider'>Cree {item}</TabsContent>
         </Tabs>
     )

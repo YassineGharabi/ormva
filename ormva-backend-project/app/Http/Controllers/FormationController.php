@@ -88,6 +88,39 @@ class FormationController extends Controller
 
 
 
+    // this function remove an employe from a formation
+    public function removeEmployeFromFormation(Request $request)
+    {
+
+        $formation = Formation::findOrFail($request->id);
+
+        $formation->employes()->detach($request->employe_id);
+
+        return [
+            'id' => $request->employe_id ,
+            'message' => 'Retiré de cette formation avec succès'
+        ];
+
+    }
+
+
+    // this function update exists row in participes
+    public function updateEmployeInFormation(Request $request)
+    {
+
+        $formation = Formation::findOrFail($request->id);
+
+        $formation->employes()->updateExistingPivot( $request->employe_id , [
+            'presence' => $request->presence == 'Pre' ? true : false ,
+            'note' => $request->note
+        ] );
+
+        return $formation::with('employes')->find($request->employe_id);
+
+    }
+
+
+
 
 
 
