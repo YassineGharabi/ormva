@@ -16,6 +16,7 @@ import FourmateurCreate from "@/pages/fourmateur/FourmateurCreate";
 import FourmateurLayout from "@/pages/fourmateur/FourmateurLayout";
 import FourmateurList from "@/pages/fourmateur/FourmateurList";
 import DashboardLayout from "@/pages/Layout/DashboardLayout";
+import TableauDeBord from "@/pages/tableauDeBord/TableauDeBord";
 import { createBrowserRouter } from "react-router-dom";
 
 
@@ -34,7 +35,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: '',
-                element: <h1>table bord</h1>
+                element: <TableauDeBord/>
             },
             {
                 path: 'fourmateur',

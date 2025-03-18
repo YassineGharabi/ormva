@@ -50,6 +50,7 @@ const LoginPage = () => {
             // catch the error of The provided credentials are incorrect.
             if(response.data.errors){
                 setError(response.data.errors.email[0]);
+                toast.dismiss(createLoading);
             }else{
               toast.dismiss(createLoading);
               setTimeout(() => {
