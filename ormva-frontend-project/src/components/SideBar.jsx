@@ -24,7 +24,7 @@ const items = [
     icon: ChartColumn,
   },
   {
-    title: "Fourmateur",
+    title: "Formateur",
     url: "fourmateur",
     icon: BriefcaseBusiness,
   },

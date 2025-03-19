@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom'
 const FourmateurLayout = () => {
   return (
     <>
-    <Tab item='fourmateurs' />
+    <Tab item='formateurs' />
     <Outlet/>
     </>
   )
