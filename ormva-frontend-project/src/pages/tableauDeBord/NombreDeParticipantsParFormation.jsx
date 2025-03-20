@@ -26,7 +26,7 @@ const ChartComponent = () => {
     });
 
     setParticipantsPerFormation(response.data);
-    console.log(response.data);
+
 
   }
 
@@ -39,8 +39,8 @@ const ChartComponent = () => {
 
 
   return (
-    <div className="min-h-[200px] w-full">
-      <ResponsiveContainer width="100%" height={400}>
+    <div className="min-h-[200px] w-full relative">
+      <ResponsiveContainer width="100%" height={360}>
         <BarChart data={chartData}>
           <XAxis dataKey="intitule" />
           <YAxis />
@@ -49,6 +49,7 @@ const ChartComponent = () => {
           <Bar dataKey="participants" fill={chartConfig.formation.color} radius={4} />
         </BarChart>
       </ResponsiveContainer>
+      <span className="text-black/85 font-semibold text-center absolute top-5 left-28" >Répartition du nombre de participants par formation</span>
     </div>
   );
 };

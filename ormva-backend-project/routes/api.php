@@ -19,6 +19,8 @@ Route::middleware('auth:sanctum')->group(function(){
 Route::apiResource('fourmateurs',FourmateurController::class);
 Route::apiResource('employes',EmployeController::class);
 Route::apiResource('formations',FormationController::class);
+Route::apiResource('doc_pedagogiques',Doc_pedagogiqueController::class);
+
 
 // participant routes
 Route::get('/formation-participant/{id}',[FormationController::class,'formationParticipant']);
@@ -29,8 +31,6 @@ Route::post('/remove-employe/{id}',[FormationController::class,'removeEmployeFro
 // suivre formation routes
 Route::get('/employe-formations/{id}',[EmployeController::class,'getEmployeFormationsById']);
 
-// docs routes
-Route::apiResource('doc_pedagogiques',Doc_pedagogiqueController::class);
 
 // get docs belongs to a formation
 Route::get('/getdocs/{id}',[Doc_pedagogiqueController::class,'getdocs']);
@@ -39,6 +39,8 @@ Route::get('/getdocs/{id}',[Doc_pedagogiqueController::class,'getdocs']);
 Route::prefix('charts')->group(function(){
     Route::get( '/total-count' , [ChartsController::class,'totalCount'] );
     Route::get( '/participants-par-formation' , [ChartsController::class,'nombreDeParticipantsParFormation'] );
+    Route::get( '/taux-presence-absence' , [ChartsController::class,'tauxDePresenceParToutFormation'] );
+    Route::get( '/formation-par-annee' , [ChartsController::class,'nombreDeFormationParAnnee'] );
 });
 
 

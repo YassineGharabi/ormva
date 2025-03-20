@@ -9,8 +9,10 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Brain, BriefcaseBusiness, Users } from 'lucide-react'
-import { Link } from 'react-router-dom'
 import ChartComponent from './NombreDeParticipantsParFormation'
+import TauxDePresenceParToutFormation from './TauxDePresenceParToutFormation'
+import NombreDeFormationParAnnee from './NombreDeFormationParAnnee'
+
 
 
 const TableauDeBord = () => {
@@ -60,11 +62,10 @@ const TableauDeBord = () => {
 
   return (
     <>
-      <div className='grid grid-cols-4 gap-3' >
+      <div className='grid grid-cols-4 gap-3 ' >
         {
           cardData.map((data, key) =>
-            <Link key={key} to={data.route} >
-              <Card >
+            <Card key={key} >
                 <CardHeader>
                   <CardTitle className='flex justify-between items-center font-medium ' > {data.name} {data.icon}</CardTitle>
                 </CardHeader>
@@ -72,13 +73,15 @@ const TableauDeBord = () => {
                   <p className='text-2xl font-bold' >{data.value}</p>
                   <CardDescription>Nombre total</CardDescription>
                 </CardContent>
-              </Card>
-            </Link>
+            </Card>
           )
         }
+        <TauxDePresenceParToutFormation/>
+
       </div>
-      <div className='grid grid-cols-2' >
+      <div className='grid grid-cols-2 gap-3 items-center' >
         <ChartComponent />
+        <NombreDeFormationParAnnee/>
       </div>
     </>
   )
