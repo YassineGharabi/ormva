@@ -33,6 +33,29 @@
             letter-spacing: 1px;
             font-weight: bold;
         }
+
+        hr {
+            border: none;
+            border-top: 1px solid gray;
+            margin: 10px 0;
+        }
+
+        .pdf__content {
+            width: 100%;
+            margin: 100px 0;
+        }
+
+        .pdf__content p {
+            width: 80%;
+            margin: 0 auto;
+            padding: 10px 0 ;
+            line-height: 20px;
+        }
+
+        .pdf__footer {
+            text-align: right;
+        }
+
     </style>
 
 </head>
@@ -99,6 +122,35 @@
                 </td>
             </tr>
         </table>
+    </div>
+    <hr />
+    {{-- content --}}
+    <div class="pdf__content" >
+
+        <p>
+            Je soussigné, Oussamma saayf,
+            certifie que {{ $attestationDetails['details'][0]->nom_complet }} a suivi avec succès
+            la formation continue intitulée "{{ $attestationDetails['details'][0]->intitule }}",
+            organisée par ORMVA-SM
+        </p>
+
+            <p>
+                Cette formation s'est déroulée du {{ $attestationDetails['details'][0]->date_debut }} au {{ $attestationDetails['details'][0]->date_fin }},
+                sur une durée totale de {{ $attestationDetails['details'][0]->duree }} jours,
+                et a permis à {{ $attestationDetails['details'][0]->nom_complet }} d'acquérir une expertise approfondie dans le domaine
+                de {{ $attestationDetails['details'][0]->intitule }}.
+            </p>
+
+        <p>
+            Grâce à cette expérience, {{ $attestationDetails['details'][0]->nom_complet }} est désormais mieux préparé(e)
+            à relever les défis liés à ce domaine.
+        </p>
+
+    </div>
+
+    {{-- footer --}}
+    <div class="pdf__footer" >
+        cachet & signature
     </div>
 
 </body>
