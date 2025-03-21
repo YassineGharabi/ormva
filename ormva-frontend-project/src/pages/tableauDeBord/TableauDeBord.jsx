@@ -46,7 +46,7 @@ const TableauDeBord = () => {
       route: 'fourmateur'
     },
     {
-      name: 'Employes',
+      name: 'Participants',
       value: totalCountData.employes_n_total,
       icon: <Users className="h-4 w-4 text-gray-600 " />,
       route: 'employes'

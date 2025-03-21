@@ -75,7 +75,7 @@ const EmpoloyeHistorique = () => {
 
   return (
     <>
-        <h1 className='uppercase font-semibold tracking-wider' >Les formations de l'employé {employe?.nom_complet}</h1>
+        <h1 className='uppercase font-semibold tracking-wider' >Les formations du participant {employe?.nom_complet}</h1>
         <DataTable columns={columns} data={formations} />
     </>
   )

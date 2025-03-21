@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom'
 const EmployeLayout = () => {
   return (
     <>
-    <Tab item='employes' />
+    <Tab item='participants' />
     <Outlet/>
     </>
   )

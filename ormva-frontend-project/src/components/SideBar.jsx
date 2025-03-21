@@ -29,7 +29,7 @@ const items = [
     icon: BriefcaseBusiness,
   },
   {
-    title: "Employes",
+    title: "Participants",
     url: "employes",
     icon: Users,
   },

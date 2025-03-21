@@ -55,6 +55,6 @@ Route::post('/logout',[AuthController::class,'logout'])->middleware('auth:sanctu
 
 
 // test routes
-Route::get('/attestation-pdf',[GenaratePdfController::class,'generateAttestationPdf']);
+Route::get('/attestation-pdf',[GenaratePdfController::class,'attestationPdf']);
 
 
