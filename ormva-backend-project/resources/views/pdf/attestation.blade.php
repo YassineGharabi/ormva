@@ -54,6 +54,7 @@
 
         .pdf__footer {
             text-align: right;
+            margin-right: 20px;
         }
 
     </style>

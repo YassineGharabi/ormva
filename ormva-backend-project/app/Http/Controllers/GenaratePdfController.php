@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 
+use App\Models\Formation;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -29,6 +30,25 @@ class GenaratePdfController extends Controller
 
         return $attestation->stream('attestation.pdf');
 
+    }
+
+    // Methode to generate convocation pdf
+    public function convocationPdf(Request $request)
+    {
+
+        $formation = Formation::findOrFail(1);
+
+        $employes = $formation->employes;
+
+        $data = [
+            'formation' => $formation,
+            'employes' => $employes
+        ];
+
+
+        $convocation = Pdf::loadView('pdf.convocation', compact('data'));
+
+        return $convocation->stream('convocation.pdf');
     }
 
 }
