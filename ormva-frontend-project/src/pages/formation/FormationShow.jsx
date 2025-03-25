@@ -1,6 +1,7 @@
 import customAxios from '@/api/customAxios';
 import { Button } from '@/components/ui/button';
 import { appContext } from '@/context/ContextProvider';
+import { FileDown } from 'lucide-react';
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
@@ -11,6 +12,32 @@ const FormationShow = () => {
   const {token} = useContext(appContext);
 
   const [formation , setFormation] = useState([]);
+
+  // function to get convocation pdf
+  const getConvocationPdf = async () => {
+    
+    try{
+      const response = await customAxios.get(`convocation-pdf/${id}`,{
+        headers: {
+          Authorization : `Bearer ${token}`
+        },
+        responseType : 'blob'
+      });
+
+      // handle dowload
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute("download", "convocation.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+    }catch(err){
+      console.error(err);
+    }
+
+  }
 
   // function to get data of formation by id
 
@@ -72,7 +99,8 @@ const FormationShow = () => {
             <span className='font-semibold text-xl uppercase' >Formateur :</span>
             <span className='text-lg capitalize' >{formation[0]?.formateur.nom}</span>
           </p>
-          <div className='flex justify-end' >
+          <div className='flex justify-end gap-1' >
+          <Button onClick={getConvocationPdf} > <FileDown/> Télécharger convocation PDF</Button>
           <Link to='participants' >
           <Button>Participants</Button>
           </Link>

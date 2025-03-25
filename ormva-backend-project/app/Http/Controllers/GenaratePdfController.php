@@ -16,11 +16,15 @@ class GenaratePdfController extends Controller
     // Methode to generate attestation pdf
     public function attestationPdf(Request $request)
     {
+        $employe_id = $request->employe_id;
+        $formation_id = $request->formation_id;
+        // return $employe_id;
+
         $data = DB::table('employes')
         ->join( 'participes' , 'participes.employe_id' , '=' , 'employes.id' )
         ->join( 'formations' , 'formations.id' , '=' , 'participes.formation_id' )
-        ->where( 'employes.id' , 1 )
-        ->where( 'formations.id' , 1 )->get();
+        ->where( 'employes.id' , $employe_id )
+        ->where( 'formations.id' , $formation_id )->get();
 
         $attestationDetails = [ 'details' => $data ];
 
@@ -28,7 +32,9 @@ class GenaratePdfController extends Controller
 
         $attestation = Pdf::loadView('pdf.attestation', compact('attestationDetails') );
 
-        return $attestation->stream('attestation.pdf');
+        return $attestation->download('attestation.pdf');
+
+
 
     }
 
@@ -36,7 +42,9 @@ class GenaratePdfController extends Controller
     public function convocationPdf(Request $request)
     {
 
-        $formation = Formation::findOrFail(1);
+        $formation_id = $request->id;
+
+        $formation = Formation::findOrFail($formation_id);
 
         $employes = $formation->employes;
 
@@ -48,7 +56,7 @@ class GenaratePdfController extends Controller
 
         $convocation = Pdf::loadView('pdf.convocation', compact('data'));
 
-        return $convocation->stream('convocation.pdf');
+        return $convocation->download('convocation.pdf');
     }
 
 }

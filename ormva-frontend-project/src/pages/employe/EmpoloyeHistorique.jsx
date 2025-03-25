@@ -1,7 +1,6 @@
 import customAxios from '@/api/customAxios'
 import { DataTable } from '@/components/table/Data-table'
 import { appContext } from '@/context/ContextProvider'
-import { Download } from 'lucide-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
@@ -14,6 +13,39 @@ const EmpoloyeHistorique = () => {
   const [ formations , setFormations ] = useState([]);
 
   const [ employe , setEmploye ] = useState([]);
+
+  // function to get the generated attestation
+  const getAttestationPdf = async (idFormation) => {
+
+    const body = {
+      employe_id : id ,
+      formation_id : idFormation
+    };
+
+    try{
+
+      const response = await customAxios.post('attestation-pdf',body,{
+        headers : {
+          Authorization : `Bearer ${token}`,
+        },
+        responseType : 'blob'
+      });
+
+      // Create a download link for the PDF
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "attestation.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+    }catch(err){
+      console.error(err);
+    }
+
+
+  }
 
   // function to get participes of an employe
   const getFormation = async () => {
@@ -65,9 +97,9 @@ const EmpoloyeHistorique = () => {
         const particip = row.original
 
         return (
-          <span className='text-blue-500 hover:underline cursor-pointer'>
+          <a onClick={()=>getAttestationPdf(particip.id)} className='text-blue-500 hover:underline cursor-pointer'>
             Télécharger attestation PDF
-          </span>
+          </a>
         )
       },
     },

@@ -49,7 +49,7 @@ const ChartComponent = () => {
           <Bar dataKey="participants" fill={chartConfig.formation.color} radius={4} />
         </BarChart>
       </ResponsiveContainer>
-      <span className="text-black/85 font-semibold text-center absolute top-5 left-28" >Répartition du nombre de participants par formation</span>
+      <span className="text-black/85 font-semibold text-center absolute bottom-[-20px] left-28" >Répartition du nombre de participants par formation</span>
     </div>
   );
 };
