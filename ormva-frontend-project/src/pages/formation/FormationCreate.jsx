@@ -37,8 +37,8 @@ import { Calendar } from "@/components/ui/calendar"
 
 //schema of form validation
 const formSchema = yup.object({
-  intitule: yup.string().min(3,'Doit comporter au moins 3 caractères').required('Champ obligatoire'),
-  description: yup.string().min(10,'Doit comporter au moins 10 caractères').required('Champ obligatoire'),
+  intitule: yup.string().required('Champ obligatoire').min(3,'Doit comporter au moins 3 caractères'),
+  description: yup.string().required('Champ obligatoire').min(10,'Doit comporter au moins 10 caractères'),
   date_debut: yup.string().required('Champ obligatoire'),
   date_fin: yup.string().required('Champ obligatoire'),
   duree: yup.string().required('Champ obligatoire'),

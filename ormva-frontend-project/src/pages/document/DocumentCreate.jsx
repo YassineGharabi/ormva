@@ -20,7 +20,8 @@ import axios from 'axios';
 
 //schema of form validation
 const formSchema = yup.object({
-  type: yup.string().required('required field'),
+  type: yup.string().required('Champ obligatoire'),
+  fileName: yup.string().required('Champ obligatoire'),
 })
 
 const DocumentCreate = () => {

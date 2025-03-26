@@ -20,8 +20,8 @@ import { toast } from "sonner"
 
 //schema of form validation
 const formSchema = yup.object({
-  email: yup.string().required().email(),
-  password: yup.string().required().min(8).max(50)
+  email: yup.string().required('Email est obligatoire').email('email doit être une adresse email valide'),
+  password: yup.string().required('Le mot de passe est obligatoire')
 })
 
 

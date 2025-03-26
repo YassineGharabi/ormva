@@ -23,12 +23,12 @@ import { useNavigate } from "react-router-dom";
 
 //schema of form validation
 const formSchema = yup.object({
-  nom_complet: yup.string().required().min(3),
-  matricule: yup.string().required(),
-  cin: yup.string().required(),
-  email: yup.string().required().email(),
-  service: yup.string().required(),
-  bureau: yup.string().required(),
+  nom_complet: yup.string().required('Champ obligatoire').min(3,'Doit comporter au moins 3 caractères'),
+  matricule: yup.string().required('Champ obligatoire'),
+  cin: yup.string().required('Champ obligatoire'),
+  email: yup.string().required('Champ obligatoire').email('email doit être une adresse email valide'),
+  service: yup.string().required('Champ obligatoire'),
+  bureau: yup.string().required('Champ obligatoire'),
 })
 
 const EmployeCreate = () => {

@@ -16,7 +16,7 @@ import customAxios from "@/api/customAxios";
 import { useContext } from "react";
 import { appContext } from "@/context/ContextProvider";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+
 
 
 
@@ -24,10 +24,10 @@ import { useNavigate } from "react-router-dom";
 
 //schema of form validation
 const formSchema = yup.object({
-  nom: yup.string().required().min(3),
-  contact: yup.string().required(),
-  domain: yup.string().required(),
-  entreprise: yup.string().required(),
+  nom: yup.string().required('Champ obligatoire').min(3,'Doit comporter au moins 3 caractères'),
+  contact: yup.string().required('Champ obligatoire'),
+  domain: yup.string().required('Champ obligatoire'),
+  entreprise: yup.string().required('Champ obligatoire'),
 })
 
 const FourmateurUpdate = ({fourmateur,setOpenUpdateDialog,setRunEffect}) => {

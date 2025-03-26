@@ -23,8 +23,8 @@ import { toast } from "sonner";
 
 //schema of form validation
 const formSchema = yup.object({
-  type: yup.string().required('required field'),
-  fileName: yup.string().required('required field'),
+  type: yup.string().required('Champ obligatoire'),
+  fileName: yup.string().required('Champ obligatoire'),
 })
 
 const DocumentUpdate = ({document,setOpenUpdateDialog,setRunEffect}) => {

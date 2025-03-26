@@ -53,12 +53,12 @@ const SelectWithSearch = ({ options , setSelectedEmployes , selectedEmployes }) 
 
       {/* Dropdown List */}
       {isOpen && (
-        <div className="absolute z-10 w-full mt-2 bg-white border rounded-lg shadow-lg">
+        <div className="absolute z-10 w-full mt-2 bg-white dark:bg-[#171717] border rounded-lg shadow-lg">
           {filteredOptions.length > 0 ? (
             filteredOptions.map((option) => (
               <div
                 key={option.id} // Use 'id' as the key
-                className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                className="px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-[#212121] rounded-lg dark:text-white"
                 onClick={() => handleSelect(option.id)}
               >
                 {option.nom_complet} {/* Display 'nom_complet' */}
@@ -76,7 +76,7 @@ const SelectWithSearch = ({ options , setSelectedEmployes , selectedEmployes }) 
           {selectedOptions.map((id) => (
             <span
               key={id}
-              className="px-3 py-1 bg-gray-300 rounded-full text-sm cursor-pointer"
+              className="px-3 py-1 bg-gray-300 rounded-full text-sm cursor-pointer dark:bg-white dark:text-black"
               onClick={() => handleRemove(id)}
             >
               {options.find((opt) => opt.id === id)?.nom_complet} ×

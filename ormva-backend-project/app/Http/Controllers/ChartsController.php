@@ -30,7 +30,7 @@ class ChartsController extends Controller
         ->join( 'participes' , 'participes.formation_id' , '=' , 'formations.id')
         ->join( 'employes' , 'employes.id' , '=' , 'participes.employe_id' )
         ->select( 'formations.intitule' , DB::raw('COUNT(employes.id) as nbr_participants') )
-        ->groupBy('formations.intitule')->get();
+        ->groupBy('formations.intitule')->limit(4)->get();
 
         return response()->json( $data , 200 );
     }
