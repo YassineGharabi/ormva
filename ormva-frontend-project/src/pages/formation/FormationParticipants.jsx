@@ -60,7 +60,9 @@ const FormationParticipants = () => {
 
       try{
         const response = await customAxios.post(`assign-employe/${id}`,{
-          selectedEmployes : selectedEmployes
+          selectedEmployes : selectedEmployes ,
+          date_d : formation.date_debut ,
+          date_f : formation.date_fin
         },{
           headers : {
             Authorization : `Bearer ${token}`
@@ -75,8 +77,11 @@ const FormationParticipants = () => {
           setSelectedEmployes([]);
         }
 
+
       }catch(err){
-        toast.error('L\'employé ou les employés sont déjà participants à cette formation.');
+        if(err.response.status == 400){
+          toast.error(`${err.response.data.message} : ${err.response.data.participants?.map( name => name )}`);
+        }
         setRunEffect(runEffect + 1);
         setSelectedEmployes([]);
         console.error(err);

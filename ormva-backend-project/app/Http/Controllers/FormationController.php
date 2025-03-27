@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Formation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\FormationRequest;
 use App\Http\Resources\FormationResource;
 
@@ -72,19 +74,51 @@ class FormationController extends Controller
 
     // this function assign an employe to a formation
     public function assignEmployeToFormation(Request $request)
-    {
-        $ids = $request->selectedEmployes;
+{
+    $ids = $request->selectedEmployes;
+    $date_d = Carbon::parse($request->date_d)->format('Y-m-d');
+    $date_fin = Carbon::parse($request->date_f)->format('Y-m-d');
+
+    // Check if any participant is already assigned to a formation in the specified date range
+    $exists = DB::table('participes')
+        ->join('formations', 'formations.id', '=', 'participes.formation_id')
+        ->join('employes', 'employes.id', '=', 'participes.employe_id') // Join the employes table to get their names
+        ->whereIn('participes.employe_id', $ids)
+        ->where(function ($query) use ($date_d, $date_fin) {
+            $query->whereBetween('formations.date_debut', [$date_d, $date_fin]) // Case 1
+                  ->orWhereBetween('formations.date_fin', [$date_d, $date_fin]) // Case 2
+                  ->orWhere(function ($q) use ($date_d, $date_fin) { // Case 3
+                      $q->where('formations.date_debut', '<=', $date_d)
+                        ->where('formations.date_fin', '>=', $date_fin);
+                  });
+        })
+        ->select('employes.nom_complet') // Select the employee names
+        ->get();
+
+    // If any participant is already registered, return their names
+    if ($exists->isEmpty()) {
 
         $formation = Formation::findOrFail($request->id);
 
-        $formation->employes()->attach($ids,[
-            'note' => '???' ,
+        // Attach the selected employees to the formation
+        $formation->employes()->attach($ids, [
+            'note' => '???',
             'presence' => false
         ]);
 
         return $formation::with('employes')->find($request->id);
 
+    } else {
+        // Get the names of the participants already enrolled during these dates
+        $names = $exists->pluck('nom_complet'); // Get the names from the result
+
+        return response()->json([
+            'message' => 'Un ou plusieurs participants sont déjà inscrits dans une formation pendant ces dates.',
+            'participants' => $names // Include the names in the response
+        ], 400);
     }
+}
+
 
 
 

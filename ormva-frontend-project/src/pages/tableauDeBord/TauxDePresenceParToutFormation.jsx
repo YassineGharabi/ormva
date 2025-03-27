@@ -24,7 +24,7 @@ const TauxDePresenceParToutFormation = ({tauxDePresence,loading}) => {
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="Presence" fill={chartConfig.formation.color} radius={4} />
-                <Bar dataKey="Absence" fill={chartConfig.formation.color} radius={4} />
+                <Bar dataKey="Absence" fill={"#A8C1F7"} radius={4} />
               </BarChart>
             </ResponsiveContainer>
             <span className="text-black/85 dark:text-white font-semibold text-center absolute bottom-7 left-7" >Taux de présence et d'absence</span>

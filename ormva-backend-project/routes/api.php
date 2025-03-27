@@ -24,7 +24,6 @@ Route::apiResource('doc_pedagogiques',Doc_pedagogiqueController::class);
 
 // participant routes
 Route::get('/formation-participant/{id}',[FormationController::class,'formationParticipant']);
-Route::post('/assign-employe/{id}',[FormationController::class,'assignEmployeToFormation']);
 Route::put('/update-employe/{id}',[FormationController::class,'updateEmployeInFormation']);
 Route::post('/remove-employe/{id}',[FormationController::class,'removeEmployeFromFormation']);
 
@@ -57,5 +56,6 @@ Route::post('/logout',[AuthController::class,'logout'])->middleware('auth:sanctu
 // test routes
 Route::post('/attestation-pdf',[GenaratePdfController::class,'attestationPdf']);
 Route::get('/convocation-pdf/{id}',[GenaratePdfController::class,'convocationPdf']);
+Route::post('/assign-employe/{id}',[FormationController::class,'assignEmployeToFormation']);
 
 

@@ -95,11 +95,15 @@ const EmpoloyeHistorique = () => {
       id: "actions",
       cell: ({ row }) => {
         const particip = row.original
-
+        const presence = row.getValue("pivot_presence");
         return (
-          <a onClick={()=>getAttestationPdf(particip.id)} className='text-blue-500 hover:underline cursor-pointer'>
-            Télécharger attestation PDF
-          </a>
+          presence ? 
+        <a onClick={()=>getAttestationPdf(particip.id)} className='text-blue-500 hover:underline cursor-pointer'>
+          Télécharger attestation PDF 
+        </a> :
+        <span className='text-red-500 hover:underline cursor-not-allowed ' >
+          Aucune attestation
+        </span>
         )
       },
     },
